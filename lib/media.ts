@@ -63,7 +63,7 @@ export const MAYAVE_HERO = img(
   "Signature jewellery piece on dark velvet, dramatic raking light.",
   "P04-S01",
   "16/9",
-  "/media/web/P04_S01_mayave_hero_optA_image.jpg"
+  "/media/images/P01_S05_home_portfolio_preview_optA_image.png"
 );
 
 export const CRAFTSMANSHIP_HERO = img(
@@ -249,63 +249,70 @@ export const MAYAVE_SPOTLIGHT = img(
 
 export const MAYAVE_LOOKBOOK: Img[] = [
   img(
-    "1605100804763-247f67b3557e",
-    "Stillness in detail — hand setting a stone.",
+    "1611652022419-a9419f74343d",
+    "Stillness in detail — pearl-and-pendant on the collarbone, editorial portrait.",
     "P04-S04",
     "4/5",
-    "/media/web/P04_S04_mayave_lookbook_optA_image.jpg"
+    "/media/mayave/lookbook_01_stillness.jpg"
   ),
   img(
-    "1535632066274-3b6cee0a6bde",
-    "Light in proportion — facet macro.",
+    "1602173574767-37ac01994b2a",
+    "Light in proportion — Mayavé signature piece on deep velvet, raking light.",
     "P04-S04",
-    "1/1"
+    "1/1",
+    "/media/mayave/lookbook_02_proportion.jpg"
   ),
   img(
     "1573408301185-9146fe634ad0",
-    "The private surface — pearl detail.",
+    "The private surface — diamond bracelet, reflective black acrylic.",
     "P04-S04",
-    "16/9"
+    "16/9",
+    "/media/mayave/lookbook_03_surface.jpg"
   ),
   img(
     "1599643477877-530eb83abc8e",
-    "Jewellery as whisper — single solitaire.",
+    "Jewellery as whisper — emerald solitaire on a gold chain, bokeh atelier light.",
     "P04-S04",
-    "4/5"
+    "4/5",
+    "/media/mayave/lookbook_04_whisper.jpg"
   ),
   img(
     "1531995811006-35cb42e1a022",
-    "Stillness in detail — chain study.",
+    "Stillness in detail — layered fine necklaces, fashion editorial crop.",
     "P04-S04",
-    "1/1"
+    "1/1",
+    "/media/mayave/lookbook_05_chain.jpg"
   ),
   img(
     "1515562141207-7a88fb7ce338",
-    "Light in proportion — hands at the bench.",
+    "Light in proportion — strung pearls in a presentation case.",
     "P04-S04",
-    "16/9"
+    "16/9",
+    "/media/mayave/lookbook_06_bench.jpg"
   ),
 ];
 
 export const MAYAVE_RELATED_JOURNAL: Img[] = [
   img(
-    "1518709268805-4e9042af9f23",
-    "Editorial journal — workshop notebook + tools, top-down.",
+    "1535556116002-6281ff3e9f36",
+    "Restraint and embellishment — gold drop earrings on a marble flatlay.",
     "P04-S05",
     "16/9",
-    "/media/images/P04_S05_mayave_related_blog_optA_image.png"
+    "/media/mayave/journal_01_restraint.jpg"
   ),
   img(
-    "1535632066274-3b6cee0a6bde",
-    "Material study — facet under directional light.",
+    "1605100804763-247f67b3557e",
+    "Polishing — halo solitaire ring at finishing stage, rose-gold accent.",
     "P04-S05",
-    "16/9"
+    "16/9",
+    "/media/mayave/journal_02_polish.jpg"
   ),
   img(
-    "1515562141207-7a88fb7ce338",
-    "Conversation — hands and stone, atelier crop.",
+    "1611591437281-460bfbe1220a",
+    "Diamond cutter — pavé bracelet macro, rose-gold setting.",
     "P04-S05",
-    "16/9"
+    "16/9",
+    "/media/mayave/journal_03_cutter.jpg"
   ),
 ];
 

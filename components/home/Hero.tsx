@@ -41,10 +41,9 @@ export default function Hero() {
       <motion.div
         ref={layer1}
         aria-hidden
-        className="absolute inset-[-2%]"
+        className="absolute inset-[-4%]"
         style={{
-          background:
-            "radial-gradient(120% 80% at 30% 30%, #1a3a78 0%, #0B1426 55%, #050A14 100%)",
+          background: "radial-gradient(120% 80% at 30% 30%, #1a3a78 0%, #0B1426 55%, #050A14 100%)",
           transform: "scale(1.02)",
         }}
         initial={{ scale: 1.05, opacity: 0 }}
@@ -54,21 +53,21 @@ export default function Hero() {
         <HeroVideo
           src={VIDEOS.homeHero}
           posterImageId={HOME_HERO.id}
-          posterImageSrc={HOME_HERO.src}
+          // posterImageSrc={HOME_HERO.src}
           alt={HOME_HERO.alt}
+          darkOverlay="none"
         />
         <div
           className="absolute inset-0 opacity-[0.04] mix-blend-overlay"
           style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.5) 1px, transparent 0)",
+            backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.5) 1px, transparent 0)",
             backgroundSize: "3px 3px",
           }}
         />
       </motion.div>
 
       {/* Layer 2 — gradient overlay (counter-cursor) */}
-      <motion.div ref={layer2} aria-hidden className="absolute inset-0 pointer-events-none">
+      {/* <motion.div ref={layer2} aria-hidden className="absolute inset-0 pointer-events-none">
         <div
           className="absolute inset-x-0 top-0 h-1/4"
           style={{ background: "linear-gradient(to bottom, rgba(11,20,38,0.55) 35%, rgba(11,20,38,0) 100%)" }}
@@ -77,7 +76,10 @@ export default function Hero() {
           className="absolute inset-x-0 bottom-0 h-2/5"
           style={{ background: "linear-gradient(to top, rgba(11,20,38,0.65) 50%, rgba(11,20,38,0) 100%)" }}
         />
-      </motion.div>
+      </motion.div> */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0B1426]/40 via-[#0B1426]/30 to-[#0B1426]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0B1426]/60 via-transparent to-transparent" />
+
 
       {/* Layer 3 — foreground typography */}
       <motion.div

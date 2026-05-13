@@ -62,7 +62,7 @@ export default function NewsHero({ image, children }: Props) {
       </motion.div>
 
       {/* Layer 2 — overlay */}
-      <motion.div
+      {/* <motion.div
         ref={layerOverlay}
         aria-hidden
         className="absolute inset-0 pointer-events-none"
@@ -74,7 +74,11 @@ export default function NewsHero({ image, children }: Props) {
               "linear-gradient(to top, rgba(6,11,23,0.85) 0%, rgba(6,11,23,0.35) 50%, rgba(6,11,23,0) 100%)",
           }}
         />
-      </motion.div>
+      </motion.div> */}
+      <div className="absolute inset-0 bg-linear-to-b from-[#0B1426]/80 via-[#0B1426]/30 to-[#0B1426]" />
+      <div className="absolute inset-0 bg-linear-to-r from-[#0B1426]/80 via-transparent to-transparent" />
+
+
 
       {/* Layer 3 — typography */}
       <div

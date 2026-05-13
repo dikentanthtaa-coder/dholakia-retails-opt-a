@@ -60,41 +60,7 @@ export default function MayaveHero() {
           posterImageSrc={MAYAVE_HERO.src}
           alt={MAYAVE_HERO.alt}
         />
-        {/* Velvet specular highlight via faceted SVG */}
-        <svg
-          aria-hidden
-          className="absolute inset-0 w-full h-full"
-          preserveAspectRatio="xMidYMid slice"
-          viewBox="0 0 1600 900"
-        >
-          <defs>
-            <radialGradient id="m-spot" cx="50%" cy="50%" r="40%">
-              <stop offset="0%" stopColor="#cdd9f0" stopOpacity="0.3" />
-              <stop offset="60%" stopColor="#3B6FFF" stopOpacity="0.06" />
-              <stop offset="100%" stopColor="#0B1426" stopOpacity="0" />
-            </radialGradient>
-            <linearGradient id="m-facet" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#cdd9f0" stopOpacity="0.55" />
-              <stop offset="100%" stopColor="#0B1426" stopOpacity="0.05" />
-            </linearGradient>
-          </defs>
-          <rect x="0" y="0" width="1600" height="900" fill="url(#m-spot)" />
-          {/* signature stone silhouette — center-right */}
-          <g transform="translate(900 450)">
-            <polygon
-              points="0,-150 110,-50 80,140 -80,140 -110,-50"
-              stroke="url(#m-facet)"
-              strokeWidth="0.8"
-              fill="none"
-            />
-            <path
-              d="M0 -150 L0 140 M-110 -50 L110 -50 M-80 140 L0 -50 L80 140"
-              stroke="url(#m-facet)"
-              strokeWidth="0.5"
-              opacity="0.7"
-            />
-          </g>
-        </svg>
+
         {/* Film grain */}
         <div
           className="absolute inset-0 opacity-[0.04] mix-blend-overlay"
@@ -107,7 +73,7 @@ export default function MayaveHero() {
       </motion.div>
 
       {/* Layer 2 — overlay gradients (top + bottom) */}
-      <motion.div
+      {/* <motion.div
         ref={layerOverlay}
         aria-hidden
         className="absolute inset-0 pointer-events-none"
@@ -126,7 +92,9 @@ export default function MayaveHero() {
               "linear-gradient(to top, rgba(6,9,26,0.85) 0%, rgba(6,9,26,0.3) 60%, rgba(6,9,26,0) 100%)",
           }}
         />
-      </motion.div>
+      </motion.div> */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1426] via-[#0B1426]/40 to-[#0B1426]/30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0B1426] via-[#0B1426]/40 to-[#0B1426]/30" />
 
       {/* Top-left breadcrumb — DM Sans caps, white at 60% opacity */}
       <motion.nav
