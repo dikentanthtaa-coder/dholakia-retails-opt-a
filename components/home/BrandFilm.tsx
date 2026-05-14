@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Play, X } from "lucide-react";
 import { useMouseParallax } from "@/hooks/useMouseParallax";
 import RevealText from "@/components/motion/RevealText";
-import EditorialImage from "@/components/motion/EditorialImage";
+import HeroVideo from "@/components/motion/HeroVideo";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { EASE_STANDARD } from "@/lib/motion";
 import { HOME_BRAND_FILM_POSTER, VIDEOS, resolveImageUrl } from "@/lib/media";
@@ -47,10 +47,14 @@ export default function BrandFilm() {
           style={{
             background:
               "radial-gradient(100% 80% at 50% 60%, #1a2542 0%, #08101F 70%, #03060C 100%)",
-            animation: "kenBurns 30s ease-in-out infinite alternate",
           }}
         >
-          <EditorialImage src={HOME_BRAND_FILM_POSTER} fill sizes="100vw" darkOverlay="cinematic" />
+          <HeroVideo
+            src={VIDEOS.brandFilm}
+            posterImageId={HOME_BRAND_FILM_POSTER.id}
+            alt={HOME_BRAND_FILM_POSTER.alt}
+            darkOverlay="none"
+          />
         </div>
         <div className="absolute inset-0 bg-black/40" />
       </motion.div>
