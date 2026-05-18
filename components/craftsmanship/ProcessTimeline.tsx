@@ -1,145 +1,317 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Pencil, Gem, Grid3x3, Wrench, Package } from "lucide-react";
-import CountUp from "@/components/motion/CountUp";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Pencil, Gem, Grid3x3, Wrench, Package, Clock3 } from "lucide-react";
+import RevealText from "@/components/motion/RevealText";
 import { EASE_STANDARD } from "@/lib/motion";
 
 /**
- * P05-S04 Process Timeline.
- * Horizontal 5-column layout desktop / vertical stack mobile.
- * Each step: numeral (Playfair Italic Electric Blue) → icon → label → 2-line description.
- * 1px Electric Blue connector line linking all steps; draws left-to-right on scroll-trigger.
+ * P05-S04 Process Timeline — connected craft track.
  *
- * Motion · Parallax · Tracking
- *   Mouse Parallax: Subtle ImageDrift on per-step macros (if used, ±4px) — not used here.
- *   Mouse Tracking: Card3DTilt at 2°. Connector line stays straight.
+ * A horizontal craft timeline (vertical on mobile) where every step sits *on*
+ * a continuous track. The track has two layers:
+ *   • A dashed navy/15% baseline that traces the full path of the journey
+ *   • A solid Electric Blue progress overlay whose length is tied to the
+ *     viewport's scroll position over the section, so the path "fills" as
+ *     the user reads down the page
  *
- * Motion timeline
- *   → Connector line: SVG path stroke-dashoffset animated on scroll-trigger, 1.4s
- *   → Steps stagger-enter: 100ms apart, fade-up 12px Y
- *   → Numerals: count-up '01' → final, 600ms
- *   → Icons: scale 0 → 1 + rotate -5deg → 0deg, 400ms
+ * Each step is a self-contained editorial composition:
+ *   • A 72px circular numeral badge that sits on the track. On hover the
+ *     badge fills with accent + the numeral inverts to white, plus an outer
+ *     pulse ring expands.
+ *   • A small duration meta line ("Week 1", "Weeks 2–3" …)
+ *   • The Lucide icon, the title (Syne display), the body copy.
+ *
+ * Background detail: an oversized italic Roman numeral "V" watermark at the
+ * back of the section nods at the five-step structure without competing with
+ * the typography.
  */
 
 type Step = {
   num: number;
   label: string;
   description: string;
+  duration: string;
   Icon: React.ComponentType<{ size?: number; strokeWidth?: number }>;
 };
 
 const STEPS: Step[] = [
-  { num: 1, label: "Concept", description: "Idea, audience, and emotional intent shaped on paper.", Icon: Pencil },
-  { num: 2, label: "Material Understanding", description: "Stone, metal, and origin examined for fit.", Icon: Gem },
-  { num: 3, label: "Design Development", description: "Proportion, balance, and silhouette refined.", Icon: Grid3x3 },
-  { num: 4, label: "Setting & Finishing", description: "Setting, polish, and detail brought to discipline.", Icon: Wrench },
-  { num: 5, label: "Presentation", description: "The piece readied for its private debut.", Icon: Package },
+  {
+    num: 1,
+    label: "Concept",
+    description:
+      "Idea, audience, and emotional intent shaped on paper before a single stone is sourced.",
+    duration: "Week 1",
+    Icon: Pencil,
+  },
+  {
+    num: 2,
+    label: "Material Understanding",
+    description:
+      "Stone, metal, and origin examined for provenance, fit, and the brief the piece must serve.",
+    duration: "Week 2",
+    Icon: Gem,
+  },
+  {
+    num: 3,
+    label: "Design Development",
+    description:
+      "Proportion, balance, and silhouette refined across iterations until the piece reads correct in hand.",
+    duration: "Weeks 3–4",
+    Icon: Grid3x3,
+  },
+  {
+    num: 4,
+    label: "Setting & Finishing",
+    description:
+      "Stones set, metal worked, surfaces brought to the discipline of mirror polish under the bench loupe.",
+    duration: "Weeks 5–7",
+    Icon: Wrench,
+  },
+  {
+    num: 5,
+    label: "Presentation",
+    description:
+      "The piece authenticated, documented, and readied for its private debut with the client.",
+    duration: "Week 8",
+    Icon: Package,
+  },
 ];
 
 export default function ProcessTimeline() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Tie the accent fill to scroll progress over the section. Starts when the
+  // section header enters the lower viewport, completes ~2/3 of the way up.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 75%", "end 35%"],
+  });
+  const trackScaleX = useTransform(scrollYProgress, [0, 0.85], [0, 1]);
+  const trackScaleY = useTransform(scrollYProgress, [0, 0.85], [0, 1]);
+
   return (
-    <section className="bg-[#faf9f7]" style={{ paddingTop: "120px", paddingBottom: "120px" }}>
-      <div className="container-editorial">
-        <div className="max-w-2xl mb-16 md:mb-20">
-          <motion.p
-            className="mb-5"
-            style={{
-              color: "var(--color-accent-primary)",
-              fontSize: "0.75rem",
-              fontWeight: 500,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-            }}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5, ease: EASE_STANDARD }}
-          >
-            Process Timeline
-          </motion.p>
-          <motion.h2
-            className="font-[family-name:var(--font-display)]"
-            style={{
-              fontSize: "clamp(1.875rem, 3.4vw, 3rem)",
-              lineHeight: 1.15,
-              letterSpacing: "-0.015em",
-              fontWeight: 500,
-            }}
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.6, ease: EASE_STANDARD }}
-          >
-            Five steps from concept to presentation.
-          </motion.h2>
+    <section
+      ref={sectionRef}
+      className="relative bg-[#faf9f7] overflow-hidden"
+      style={{ paddingTop: "140px", paddingBottom: "140px" }}
+    >
+      {/* Oversized "V" watermark — 5 in Roman numerals. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 flex items-center justify-end pr-[3vw] opacity-[0.035] select-none"
+      >
+        <span
+          className="font-[family-name:var(--font-display)] italic text-[var(--color-text-primary)]"
+          style={{ fontSize: "clamp(20rem, 42vw, 56rem)", lineHeight: 0.85, fontWeight: 500 }}
+        >
+          V
+        </span>
+      </div>
+
+      <div className="relative container-editorial">
+        {/* Header — asymmetric, title left + meta right */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-y-8 gap-x-16 mb-24 md:mb-28">
+          <div>
+            <motion.p
+              className="eyebrow mb-6"
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ duration: 0.5, ease: EASE_STANDARD }}
+            >
+              Process Timeline · 5 stages
+            </motion.p>
+            <RevealText
+              text="Five steps from concept to presentation."
+              as="h2"
+              className="text-[var(--color-text-primary)] font-[family-name:var(--font-display)]"
+              style={{
+                fontSize: "clamp(2rem, 4.4vw, 3.5rem)",
+                lineHeight: 1.05,
+                letterSpacing: "-0.02em",
+                fontWeight: 500,
+              }}
+              staggerMs={50}
+              durationMs={650}
+            />
+          </div>
+          <div className="lg:pt-4 flex flex-col gap-5">
+            <motion.p
+              className="text-[var(--color-text-body)]"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ duration: 0.6, delay: 0.4, ease: EASE_STANDARD }}
+              style={{ fontSize: "1.0625rem", lineHeight: 1.65 }}
+            >
+              Every piece moves through five disciplined stages. Time is not
+              the goal — but it is the cost of doing the work properly.
+            </motion.p>
+
+            {/* Meta chips */}
+            <motion.div
+              className="flex flex-wrap items-center gap-x-5 gap-y-2"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ duration: 0.5, delay: 0.6, ease: EASE_STANDARD }}
+            >
+              <span className="inline-flex items-center gap-2 text-[0.7rem] tracking-[0.16em] uppercase text-[var(--color-text-muted)] font-[family-name:var(--font-mono)]">
+                <Clock3 size={12} strokeWidth={1.5} />
+                Avg duration · 6–8 weeks
+              </span>
+              <span className="text-[var(--color-text-muted)]/40">·</span>
+              <span className="text-[0.7rem] tracking-[0.16em] uppercase text-[var(--color-text-muted)] font-[family-name:var(--font-mono)]">
+                Atelier-led · Surat
+              </span>
+            </motion.div>
+          </div>
         </div>
 
-        <div>
-          {/* Steps */}
-          <motion.ol
-            className="grid grid-cols-1 lg:grid-cols-5 gap-y-12 gap-x-6 list-none items-stretch"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.1 } },
+        {/* ─── Timeline ─── */}
+        <div className="relative">
+          {/*
+            Desktop horizontal track — baseline (dashed navy) + accent fill.
+            Positioned at top=36px which is exactly the vertical centre of the
+            72px-tall numeral badges below.
+          */}
+          <div
+            aria-hidden
+            className="hidden lg:block absolute top-9 left-[10%] right-[10%] h-px"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(90deg, rgba(11,20,38,0.18) 0 6px, transparent 6px 12px)",
             }}
-          >
-            {STEPS.map((s) => (
-              <motion.li
-                key={s.num}
-                className="h-full"
-                variants={{
-                  hidden: { opacity: 0, y: 12 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE_STANDARD } },
-                }}
-              >
-                <ProcessStep step={s} />
-              </motion.li>
+          />
+          <motion.div
+            aria-hidden
+            className="hidden lg:block absolute top-9 left-[10%] right-[10%] h-px origin-left bg-[var(--color-accent-primary)]"
+            style={{ scaleX: trackScaleX, willChange: "transform" }}
+          />
+
+          {/*
+            Mobile vertical track — same two layers, just rotated. Sits behind
+            the badge column (offset left so the badges stay aligned).
+          */}
+          <div
+            aria-hidden
+            className="lg:hidden absolute top-9 bottom-9 left-9 w-px"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(180deg, rgba(11,20,38,0.18) 0 6px, transparent 6px 12px)",
+            }}
+          />
+          <motion.div
+            aria-hidden
+            className="lg:hidden absolute top-9 bottom-9 left-9 w-px origin-top bg-[var(--color-accent-primary)]"
+            style={{ scaleY: trackScaleY, willChange: "transform" }}
+          />
+
+          {/* Steps */}
+          <ol className="relative list-none grid grid-cols-1 lg:grid-cols-5 gap-y-12 lg:gap-y-0 lg:gap-x-6">
+            {STEPS.map((s, i) => (
+              <Step key={s.num} step={s} index={i} />
             ))}
-          </motion.ol>
+          </ol>
         </div>
+
+        {/* Footer caption */}
+        <motion.p
+          className="mt-20 text-center text-[0.7rem] tracking-[0.18em] uppercase text-[var(--color-text-muted)] font-[family-name:var(--font-mono)]"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.5, ease: EASE_STANDARD }}
+        >
+          Bench-side · Surat workshop · Each piece touched by hand
+        </motion.p>
       </div>
     </section>
   );
 }
 
-function ProcessStep({ step }: { step: Step }) {
-  const { num, label, description, Icon } = step;
-  return (
-    <div className="relative h-full group">
-      <div className="relative h-full bg-white rounded-xl border border-[rgba(0,0,0,0.06)] p-7 pt-8 flex flex-col transition-all duration-300 group-hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] group-hover:-translate-y-1 group-hover:border-[rgba(0,0,0,0.10)]">
-        {/* Numeral — inside a circular badge */}
-        <div
-          className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-[var(--color-accent-primary)] text-[var(--color-accent-primary)] mb-5 font-[family-name:var(--font-display)] italic"
-          style={{ fontSize: "0.875rem", fontWeight: 500, lineHeight: 1 }}
-        >
-          <CountUp to={num} pad={2} durationMs={600} />
-        </div>
+function Step({ step, index }: { step: Step; index: number }) {
+  const { num, label, description, duration, Icon } = step;
 
-        {/* Icon */}
+  return (
+    <motion.li
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: EASE_STANDARD }}
+      className="group/step relative flex flex-row lg:flex-col items-start lg:items-start gap-6 lg:gap-0 pl-0 lg:pl-0"
+    >
+      {/* Numeral badge — sits on the track. The 72px ring is centered on the
+          track line (top=36px) so the line visually passes *through* the badge. */}
+      <div className="relative shrink-0">
+        {/* Outer pulse ring — only visible on hover */}
+        <span
+          aria-hidden
+          className="absolute inset-0 rounded-full border border-[var(--color-accent-primary)] scale-100 opacity-0 group-hover/step:scale-[1.5] group-hover/step:opacity-25 transition-all duration-700 ease-out"
+        />
         <motion.span
-          className="inline-flex text-[var(--color-accent-primary)] mb-5 opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-          initial={{ scale: 0, rotate: -5 }}
+          className="relative inline-flex items-center justify-center w-[72px] h-[72px] rounded-full bg-[#faf9f7] border border-[var(--color-accent-primary)] text-[var(--color-accent-primary)] font-[family-name:var(--font-display)] italic transition-[background-color,color,box-shadow] duration-500 ease-out group-hover/step:bg-[var(--color-accent-primary)] group-hover/step:text-white group-hover/step:shadow-[0_0_0_8px_rgba(59,111,255,0.08)]"
+          style={{ fontSize: "1.05rem", fontWeight: 500, lineHeight: 1 }}
+          initial={{ scale: 0, rotate: -8 }}
           whileInView={{ scale: 1, rotate: 0 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.4, ease: EASE_STANDARD }}
+          transition={{
+            type: "spring",
+            stiffness: 170,
+            damping: 14,
+            delay: 0.25 + index * 0.1,
+          }}
         >
-          <Icon size={28} strokeWidth={1.5} />
+          {String(num).padStart(2, "0")}
+        </motion.span>
+      </div>
+
+      {/* Content column */}
+      <div className="flex-1 lg:mt-10 max-w-md lg:max-w-[15rem]">
+        {/* Duration pill */}
+        <span className="inline-flex items-center gap-2 mb-4 text-[0.65rem] tracking-[0.18em] uppercase text-[var(--color-text-muted)] font-[family-name:var(--font-mono)]">
+          <span className="w-3 h-px bg-[var(--color-accent-primary)]" />
+          {duration}
+        </span>
+
+        {/* Icon — rotates slightly + scales on hover. */}
+        <motion.span
+          className="block text-[var(--color-accent-primary)] mb-4 transition-transform duration-500 ease-out group-hover/step:scale-110 group-hover/step:-rotate-[4deg]"
+          initial={{ scale: 0, rotate: -8 }}
+          whileInView={{ scale: 1, rotate: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{
+            duration: 0.5,
+            delay: 0.35 + index * 0.1,
+            ease: EASE_STANDARD,
+          }}
+        >
+          <Icon size={30} strokeWidth={1.5} />
         </motion.span>
 
+        {/* Title */}
         <h3
-          className="text-[var(--color-text-primary)] mb-3 font-[family-name:var(--font-display)]"
-          style={{ fontSize: "1.125rem", fontWeight: 500, lineHeight: 1.25 }}
+          className="font-[family-name:var(--font-display)] text-[var(--color-text-primary)] mb-3 transition-colors duration-300 group-hover/step:text-[var(--color-accent-primary)]"
+          style={{
+            fontSize: "clamp(1.125rem, 1.5vw, 1.375rem)",
+            fontWeight: 500,
+            lineHeight: 1.2,
+            letterSpacing: "-0.005em",
+          }}
         >
           {label}
         </h3>
-        <p className="text-[var(--color-text-body)] text-[0.9rem] leading-relaxed flex-1">
+
+        {/* Description */}
+        <p
+          className="text-[var(--color-text-body)] leading-relaxed"
+          style={{ fontSize: "0.95rem" }}
+        >
           {description}
         </p>
       </div>
-    </div>
+    </motion.li>
   );
 }

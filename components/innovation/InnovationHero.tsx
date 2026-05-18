@@ -81,46 +81,7 @@ export default function InnovationHero() {
       >
         <EditorialImage src={INNOVATION_HERO} fill priority sizes="100vw" darkOverlay="cinematic" />
         {/* Crystal lattice geometry */}
-        <svg
-          aria-hidden
-          className="absolute inset-0 w-full h-full"
-          preserveAspectRatio="xMidYMid slice"
-          viewBox="0 0 1600 900"
-        >
-          <defs>
-            <linearGradient id="ih-lat" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#9bb5ff" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#3B6FFF" stopOpacity="0.08" />
-            </linearGradient>
-          </defs>
-          {/* radiating lattice lines */}
-          {Array.from({ length: 24 }).map((_, i) => (
-            <line
-              key={i}
-              x1={800}
-              y1={450}
-              x2={800 + Math.cos((i * Math.PI) / 12) * 1000}
-              y2={450 + Math.sin((i * Math.PI) / 12) * 1000}
-              stroke="url(#ih-lat)"
-              strokeWidth="0.6"
-            />
-          ))}
-          {/* concentric octagons */}
-          {[180, 320, 460, 600].map((r) => (
-            <polygon
-              key={r}
-              points={Array.from({ length: 8 })
-                .map((_, i) => {
-                  const a = (i * Math.PI) / 4;
-                  return `${800 + Math.cos(a) * r},${450 + Math.sin(a) * r}`;
-                })
-                .join(" ")}
-              fill="none"
-              stroke="url(#ih-lat)"
-              strokeWidth="0.6"
-            />
-          ))}
-        </svg>
+       
         {/* film grain */}
         <div
           className="absolute inset-0 opacity-[0.04] mix-blend-overlay"

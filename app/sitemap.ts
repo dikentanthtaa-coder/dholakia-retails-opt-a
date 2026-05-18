@@ -34,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/innovation", priority: 0.9, changeFrequency: "monthly" as const },
     { path: "/global-presence", priority: 0.8, changeFrequency: "monthly" as const },
     { path: "/news", priority: 0.9, changeFrequency: "weekly" as const },
-    { path: "/blog", priority: 0.9, changeFrequency: "weekly" as const },
+    // { path: "/blog", priority: 0.9, changeFrequency: "weekly" as const },
     { path: "/careers", priority: 0.8, changeFrequency: "weekly" as const },
     { path: "/contact", priority: 0.8, changeFrequency: "yearly" as const },
     { path: "/legal/privacy", priority: 0.3, changeFrequency: "yearly" as const },
@@ -61,12 +61,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const blogRoutes: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
-    url: `${SITE_URL}/blog/${slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
+  // const blogRoutes: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
+  //   url: `${SITE_URL}/blog/${slug}`,
+  //   lastModified: now,
+  //   changeFrequency: "monthly" as const,
+  //   priority: 0.6,
+  // }));
 
   const careerRoutes: MetadataRoute.Sitemap = careerSlugs.map((slug) => ({
     url: `${SITE_URL}/careers/${slug}`,
@@ -75,5 +75,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  return [...staticRoutes, ...newsRoutes, ...blogRoutes, ...careerRoutes];
+  // return [...staticRoutes, ...newsRoutes, ...blogRoutes, ...careerRoutes];
+  return [...staticRoutes, ...newsRoutes, ...careerRoutes];
 }

@@ -69,6 +69,7 @@ export default function MakingEcosystem() {
                 posterImageSrc={CRAFT_MAKING_ECOSYSTEM.src}
                 alt={CRAFT_MAKING_ECOSYSTEM.alt}
                 darkOverlay="none"
+                sizes="(min-width: 1024px) 50vw, 100vw"
               />
             </motion.div>
 

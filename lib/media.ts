@@ -103,7 +103,7 @@ export const INNOVATION_HERO = img(
   "Crystal-lattice macro / lab equipment, cool clinical light.",
   "P07-S01",
   "16/9",
-  "/media/images/P07_S01_innovation_hero_optA_image.webp"
+  "/media/images/P04_S05_mayave_related_blog_optA_image.webp"
 );
 
 export const INNOVATION_LGD = img(
@@ -487,21 +487,15 @@ export const VIDEOS = {
   /** P06-S03 Sustainability wider group context — final AI cinematic loop. */
   sustainabilityGroupContext:
     "/media/videos/P06_S03_sustainability_wider_group_context_optA_video.mp4",
-  /**
-   * P04-S01 Mayavé hero — Option_A inventory points to a TikTok page
-   * (https://www.tiktok.com/@mon.ete.studio/video/7363778218886843691) which
-   * cannot be embedded as a direct mp4 source. Pexels reference clip is kept
-   * until a downloaded asset replaces it.
-   */
-  mayaveHero:
-    "https://videos.pexels.com/video-files/4498268/4498268-uhd_3840_2160_25fps.mp4",
+  /** P04-S01 Mayavé hero — final 4K cinematic loop. */
+  mayaveHero: "/media/mayave/MAYAVE_4K.mp4",
   /**
    * P05-S03 Making Ecosystem — Option_A inventory points to a YouTube page
    * (https://www.youtube.com/watch?v=u4BhnemDCH0) which cannot be embedded as
    * a direct mp4 source. Pexels reference clip is kept until replaced.
    */
   makingEcosystem:
-    "/media/videos/P05_S01_craftsmanship_hero_optA_video.mp4",
+    "/media/videos/P05_S01_craftsmanship_hero_optA_video_1.mp4",
 } as const;
 
 /* ─── Helpers ─────────────────────────────────────────────────────────── */

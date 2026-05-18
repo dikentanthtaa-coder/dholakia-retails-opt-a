@@ -33,7 +33,7 @@ export default function MayavePage() {
       <BrandEssence />
       <BrandFacts />
       <Lookbook />
-      <RelatedJournal />
+      {/* <RelatedJournal /> */}
       <RelatedNews />
       <PageClosingBand
         heading="By appointment, by intention."

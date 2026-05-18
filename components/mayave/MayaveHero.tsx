@@ -49,27 +49,28 @@ export default function MayaveHero() {
         initial={{ scale: 1.04, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.4, ease: EASE_STANDARD }}
-        style={{
-          background:
-            "radial-gradient(60% 70% at 55% 45%, #2a3552 0%, #14193a 50%, #06091a 100%)",
-        }}
+        // style={{
+        //   background:
+        //     "radial-gradient(60% 70% at 55% 45%, #2a3552 0%, #14193a 50%, #06091a 100%)",
+        // }}
       >
         <HeroVideo
           src={VIDEOS.mayaveHero}
           posterImageId={MAYAVE_HERO.id}
           posterImageSrc={MAYAVE_HERO.src}
           alt={MAYAVE_HERO.alt}
+          priority
         />
 
         {/* Film grain */}
-        <div
+        {/* <div
           className="absolute inset-0 opacity-[0.04] mix-blend-overlay"
           style={{
             backgroundImage:
               "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.5) 1px, transparent 0)",
             backgroundSize: "3px 3px",
           }}
-        />
+        /> */}
       </motion.div>
 
       {/* Layer 2 — overlay gradients (top + bottom) */}
@@ -93,8 +94,8 @@ export default function MayaveHero() {
           }}
         />
       </motion.div> */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1426] via-[#0B1426]/40 to-[#0B1426]/30" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0B1426] via-[#0B1426]/40 to-[#0B1426]/30" />
+      {/* <div className="absolute inset-0 bg-gradient-to-t from-[#0B1426] via-[#0B1426]/40 to-[#0B1426]/30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0B1426] via-[#0B1426]/40 to-[#0B1426]/30" /> */}
 
       {/* Top-left breadcrumb — DM Sans caps, white at 60% opacity */}
       <motion.nav

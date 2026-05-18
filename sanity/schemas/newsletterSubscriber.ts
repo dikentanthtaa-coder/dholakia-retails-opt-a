@@ -31,7 +31,7 @@ export default defineType({
       title: "Source page / component",
       type: "string",
       description:
-        "Where the subscription was initiated (e.g. /blog, /news, footer).",
+        "Where the subscription was initiated (e.g. /news, footer).",
     }),
     defineField({
       name: "subscribedAt",

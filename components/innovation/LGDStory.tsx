@@ -53,56 +53,7 @@ export default function LGDStory() {
                 sizes="(min-width: 1024px) 60vw, 100vw"
                 darkOverlay="cinematic"
               />
-              {/* CVD chamber abstract illustration */}
-              <svg
-                aria-hidden
-                className="absolute inset-0 w-full h-full"
-                preserveAspectRatio="xMidYMid meet"
-                viewBox="0 0 800 600"
-              >
-                <defs>
-                  <linearGradient id="lgd-g" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#9bb5ff" stopOpacity="0.85" />
-                    <stop offset="100%" stopColor="#3B6FFF" stopOpacity="0.25" />
-                  </linearGradient>
-                </defs>
-                {/* CVD chamber outer ring */}
-                <circle cx="400" cy="300" r="220" stroke="url(#lgd-g)" strokeWidth="1.2" fill="none" />
-                <circle cx="400" cy="300" r="170" stroke="url(#lgd-g)" strokeWidth="0.8" fill="none" opacity="0.7" />
-                {/* seed crystal */}
-                <polygon
-                  points="380,320 420,320 440,290 420,260 380,260 360,290"
-                  fill="url(#lgd-g)"
-                  opacity="0.75"
-                />
-                {/* growth rays */}
-                {Array.from({ length: 12 }).map((_, i) => (
-                  <line
-                    key={i}
-                    x1={400}
-                    y1={290}
-                    x2={400 + Math.cos((i * Math.PI) / 6) * 200}
-                    y2={290 + Math.sin((i * Math.PI) / 6) * 200}
-                    stroke="url(#lgd-g)"
-                    strokeWidth="0.6"
-                    opacity="0.4"
-                  />
-                ))}
-                {/* horizontal scale ticks */}
-                {Array.from({ length: 9 }).map((_, i) => (
-                  <line
-                    key={`t-${i}`}
-                    x1={140 + i * 65}
-                    y1={560}
-                    x2={140 + i * 65}
-                    y2={570}
-                    stroke="#9bb5ff"
-                    strokeOpacity="0.5"
-                    strokeWidth="0.6"
-                  />
-                ))}
-                <line x1="140" y1="570" x2="660" y2="570" stroke="#9bb5ff" strokeOpacity="0.4" strokeWidth="0.5" />
-              </svg>
+             
             </motion.div>
             <motion.div
               ref={layerOverlay}

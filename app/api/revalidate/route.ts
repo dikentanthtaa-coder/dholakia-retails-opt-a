@@ -42,11 +42,10 @@ export async function POST(req: NextRequest) {
       revalidatePath("/news");
       if (body.slug?.current) revalidatePath(`/news/${body.slug.current}`);
     }
-    if (body._type === "blogPost") {
-      revalidatePath("/blog");
-      if (body.slug?.current) revalidatePath(`/blog/${body.slug.current}`);
-    }
-
+    // if (body._type === "blogPost") {
+    //   revalidatePath("/blog");
+    //   if (body.slug?.current) revalidatePath(`/blog/${body.slug.current}`);
+    // }
     return NextResponse.json({ revalidated: true, type: body._type });
   } catch (err) {
     return NextResponse.json({ message: (err as Error).message }, { status: 500 });

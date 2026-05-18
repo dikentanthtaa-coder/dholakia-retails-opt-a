@@ -38,6 +38,14 @@ type Props = {
   darkOverlay?: "none" | "subtle" | "strong" | "cinematic";
   /** When true, the poster preloads with priority (hero LCP candidate). */
   priority?: boolean;
+  /**
+   * Responsive `sizes` for the poster `<Image>`. Defaults to `100vw`, which is
+   * correct for full-bleed heroes but wasteful when the video pane only
+   * occupies half the viewport (e.g. split-screen sections). Pass an accurate
+   * `sizes` string from those callers so Next.js can pick a smaller srcset
+   * entry — this is what the Next.js dev-mode warning is asking for.
+   */
+  sizes?: string;
 };
 
 const EDITORIAL_FILTER =
@@ -63,21 +71,48 @@ export default function HeroVideo({
   posterImageId,
   posterImageSrc,
   priority = false,
+  sizes = "100vw",
 }: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLVideoElement>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
   const [playable, setPlayable] = useState(false);
   const [errored, setErrored] = useState(false);
+  const [skipVideo, setSkipVideo] = useState(false);
 
   const posterUrl = posterImageSrc
     ?? resolveImageUrl({ id: posterImageId }, 1920, 75);
   const posterBlur = (posterImageSrc && BLUR[posterImageSrc]) || DEFAULT_BLUR;
 
+  // Skip video entirely when the user has signalled they want less data or
+  // motion: Save-Data, slow effective-type (2g/slow-2g/3g), or
+  // prefers-reduced-motion. The poster image alone covers the visual.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const reducedMotion =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+
+    type NetworkInformation = {
+      saveData?: boolean;
+      effectiveType?: "slow-2g" | "2g" | "3g" | "4g";
+    };
+    const nav = navigator as Navigator & { connection?: NetworkInformation };
+    const conn = nav.connection;
+    const saveData = conn?.saveData === true;
+    const slowNetwork =
+      conn?.effectiveType === "slow-2g" ||
+      conn?.effectiveType === "2g" ||
+      conn?.effectiveType === "3g";
+
+    if (reducedMotion || saveData || slowNetwork) setSkipVideo(true);
+  }, []);
+
   // Lazy-load the video: only when its container is within 200px of the viewport.
   // Also pauses + resumes based on visibility.
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (skipVideo) return;
     const wrap = wrapperRef.current;
     if (!wrap) return;
 
@@ -94,7 +129,7 @@ export default function HeroVideo({
     );
     loadObs.observe(wrap);
     return () => loadObs.disconnect();
-  }, []);
+  }, [skipVideo]);
 
   useEffect(() => {
     if (!shouldLoad) return;
@@ -120,7 +155,7 @@ export default function HeroVideo({
         src={posterUrl}
         alt={alt}
         fill
-        sizes="100vw"
+        sizes={sizes}
         {...(priority
           ? { preload: true as const, fetchPriority: "high" as const, loading: "eager" as const }
           : { loading: "eager" as const })}

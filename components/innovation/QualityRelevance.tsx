@@ -96,55 +96,7 @@ export default function QualityRelevance() {
           >
             <EditorialImage src={INNOVATION_QUALITY} fill sizes="(min-width: 1024px) 1200px, 100vw" />
           </div>
-          {/* abstract data overlay */}
-          <svg
-            aria-hidden
-            className="absolute inset-0 w-full h-full"
-            preserveAspectRatio="xMidYMid slice"
-            viewBox="0 0 1600 900"
-          >
-            <defs>
-              <linearGradient id="qr-grad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#9bb5ff" stopOpacity="0.6" />
-                <stop offset="100%" stopColor="#3B6FFF" stopOpacity="0.15" />
-              </linearGradient>
-            </defs>
-            {/* concentric provenance rings */}
-            {[120, 220, 320, 420].map((r) => (
-              <circle
-                key={r}
-                cx="800"
-                cy="450"
-                r={r}
-                fill="none"
-                stroke="url(#qr-grad)"
-                strokeWidth="0.6"
-                opacity="0.6"
-              />
-            ))}
-            {/* data ticks */}
-            {Array.from({ length: 32 }).map((_, i) => {
-              const a = (i * Math.PI * 2) / 32;
-              const x1 = 800 + Math.cos(a) * 440;
-              const y1 = 450 + Math.sin(a) * 440;
-              const x2 = 800 + Math.cos(a) * 460;
-              const y2 = 450 + Math.sin(a) * 460;
-              return (
-                <line
-                  key={i}
-                  x1={x1}
-                  y1={y1}
-                  x2={x2}
-                  y2={y2}
-                  stroke="url(#qr-grad)"
-                  strokeWidth="0.8"
-                />
-              );
-            })}
-            {/* center crosshair */}
-            <line x1="760" y1="450" x2="840" y2="450" stroke="#9bb5ff" strokeOpacity="0.5" strokeWidth="0.6" />
-            <line x1="800" y1="410" x2="800" y2="490" stroke="#9bb5ff" strokeOpacity="0.5" strokeWidth="0.6" />
-          </svg>
+          
           {/* film grain */}
           <div
             className="absolute inset-0 opacity-[0.04] mix-blend-overlay"

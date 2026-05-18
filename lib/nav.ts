@@ -13,7 +13,7 @@ export const PRIMARY_NAV: NavLink[] = [
   { label: "Craftsmanship", href: "/craftsmanship" },
   { label: "Sustainability", href: "/sustainability" },
   { label: "Innovation", href: "/innovation" },
-  { label: "Journal", href: "/blog" },
+  // { label: "Journal", href: "/blog" },
   { label: "News", href: "/news" },
   { label: "Careers", href: "/careers" },
 ];
