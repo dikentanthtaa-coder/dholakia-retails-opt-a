@@ -379,7 +379,7 @@ export const GROUP_LEADERSHIP: Img[] = [
     "Founder Director — environmental B&W portrait.",
     "P02-S03",
     "4/5",
-    "/media/web/P02_S03_the_group_leadership_optA_image.jpg"
+    "/media/images/Leaders/Dravya Dholakia.png"
   ),
   img(
     "1573497019418-b400bb3ab074",
