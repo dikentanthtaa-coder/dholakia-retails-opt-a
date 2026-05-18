@@ -7,7 +7,7 @@ import Link from "next/link";
 import TiltCard from "@/components/motion/TiltCard";
 import EditorialImage from "@/components/motion/EditorialImage";
 import { EASE_STANDARD } from "@/lib/motion";
-import { PORTFOLIO_BRAND_MATRIX_MAYAVE } from "@/lib/media";
+import { MAYAVE_SPOTLIGHT, PORTFOLIO_BRAND_MATRIX_MAYAVE } from "@/lib/media";
 
 /**
  * P03-S02 Brand Matrix — bento 2×2.
@@ -30,9 +30,6 @@ const CELLS: Cell[] = [
     description: "A refined expression of bespoke luxury — where silence becomes jewellery.",
     href: "/portfolio/mayave",
   },
-  { name: "Future Brand Territory", status: "placeholder" },
-  { name: "Future Brand Territory", status: "placeholder" },
-  { name: "Future Brand Territory", status: "placeholder" },
 ];
 
 export default function BrandMatrix() {
@@ -42,7 +39,7 @@ export default function BrandMatrix() {
   return (
     <section ref={sectionRef} className="bg-white py-28 md:py-36" aria-label="Brand portfolio matrix">
       <div className="container-editorial">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 gap-6 lg:gap-8">
           {CELLS.map((cell, i) => (
             <motion.div
               key={`${cell.name}-${i}`}
@@ -73,14 +70,14 @@ function ActiveCell({ cell }: { cell: Cell }) {
   return (
     <Link
       href={cell.href ?? "#"}
-      className="group relative block aspect-[4/3] md:aspect-[3/2] overflow-hidden border border-black/10 hover:border-transparent transition-colors duration-300"
+      className="group relative block aspect-video md:aspect-21/9 overflow-hidden border border-black/10 hover:border-transparent transition-colors duration-300"
       style={{ background: "linear-gradient(135deg, #14213d 0%, #0B1426 60%, #060B17 100%)" }}
     >
       <BorderDraw />
       {/* Mayavé editorial photograph — replaces the SVG facet placeholder */}
       <div className="absolute inset-0">
         <EditorialImage
-          src={PORTFOLIO_BRAND_MATRIX_MAYAVE}
+          src={MAYAVE_SPOTLIGHT}
           fill
           sizes="100vw"
           darkOverlay="cinematic"
@@ -96,11 +93,11 @@ function ActiveCell({ cell }: { cell: Cell }) {
       />
 
       <div className="absolute inset-0 p-7 md:p-10 flex flex-col justify-end text-white">
-        <p className="text-[0.7rem] tracking-[0.14em] uppercase text-[var(--color-accent-soft)] mb-3">
+        <p className="text-[0.7rem] tracking-[0.14em] uppercase text-accent-soft mb-3">
           Signature Brand
         </p>
         <h3
-          className="font-[family-name:var(--font-display)] mb-3"
+          className="font-display mb-3 text-white"
           style={{ fontSize: "clamp(2rem, 3.6vw, 2.75rem)", letterSpacing: "0.005em", fontWeight: 500 }}
         >
           {cell.name}
@@ -135,14 +132,14 @@ function PlaceholderCell() {
         </svg>
       </div>
 
-      <span className="absolute top-5 right-5 inline-flex items-center gap-1.5 text-[0.65rem] tracking-[0.18em] uppercase text-[var(--color-text-muted)]">
+      <span className="absolute top-5 right-5 inline-flex items-center gap-1.5 text-[0.65rem] tracking-[0.18em] uppercase text-(--color-text-muted)">
         <Clock size={12} strokeWidth={1.5} />
         Coming soon
       </span>
 
       <div className="absolute inset-0 p-7 md:p-10 flex flex-col justify-end">
         <h3
-          className="font-[family-name:var(--font-display)] text-[var(--color-text-primary)]/70"
+          className="font-display text-(--color-text-primary)/70"
           style={{ fontSize: "clamp(1.5rem, 2.6vw, 2rem)", fontWeight: 500 }}
         >
           Future Brand Territory
@@ -155,10 +152,10 @@ function PlaceholderCell() {
 function BorderDraw() {
   return (
     <>
-      <span className="pointer-events-none absolute top-0 left-0 h-px bg-[var(--color-accent-primary)] w-0 group-hover:w-full transition-[width] duration-[50ms] ease-out" />
-      <span className="pointer-events-none absolute top-0 right-0 w-px bg-[var(--color-accent-primary)] h-0 group-hover:h-full transition-[height] duration-[50ms] ease-out delay-[50ms]" />
-      <span className="pointer-events-none absolute bottom-0 right-0 h-px bg-[var(--color-accent-primary)] w-0 group-hover:w-full transition-[width] duration-[50ms] ease-out delay-[100ms]" />
-      <span className="pointer-events-none absolute bottom-0 left-0 w-px bg-[var(--color-accent-primary)] h-0 group-hover:h-full transition-[height] duration-[50ms] ease-out delay-[150ms]" />
+      <span className="pointer-events-none absolute top-0 left-0 h-px bg-accent-primary w-0 group-hover:w-full transition-[width] duration-50 ease-out" />
+      <span className="pointer-events-none absolute top-0 right-0 w-px bg-accent-primary h-0 group-hover:h-full transition-[height] duration-50 ease-out delay-50" />
+      <span className="pointer-events-none absolute bottom-0 right-0 h-px bg-accent-primary w-0 group-hover:w-full transition-[width] duration-50 ease-out delay-100" />
+      <span className="pointer-events-none absolute bottom-0 left-0 w-px bg-accent-primary h-0 group-hover:h-full transition-[height] duration-50 ease-out delay-150" />
     </>
   );
 }

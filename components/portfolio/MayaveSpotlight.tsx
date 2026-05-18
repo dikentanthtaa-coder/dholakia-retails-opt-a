@@ -39,55 +39,6 @@ export default function MayaveSpotlight() {
 
   return (
     <section className="bg-white">
-      <div ref={containerRef} className="relative w-full h-[60vh] min-h-[420px] overflow-hidden text-white">
-        <motion.div
-          ref={layer1}
-          aria-hidden
-          className="absolute inset-[-3%]"
-          initial={{ scale: 1.04, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 1.4, ease: EASE_STANDARD }}
-          // style={{ background: "radial-gradient(70% 70% at 55% 45%, #2a3552 0%, #14193a 55%, #08081A 100%)" }}
-        >
-          <EditorialImage src={MAYAVE_SPOTLIGHT} fill sizes="100vw" darkOverlay="cinematic" />
-        </motion.div>
-        <motion.div
-          ref={layer2}
-          aria-hidden
-          className="absolute inset-0 pointer-events-none"
-          // style={{ background: "radial-gradient(80% 60% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.45) 100%)" }}
-        />
-        {/* <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <svg width="320" height="380" viewBox="0 0 240 300" fill="none" aria-hidden className="opacity-90">
-            <defs>
-              <linearGradient id="ms-facet" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#cdd9f0" stopOpacity="0.9" />
-                <stop offset="60%" stopColor="#3B6FFF" stopOpacity="0.45" />
-                <stop offset="100%" stopColor="#0B1426" stopOpacity="0.15" />
-              </linearGradient>
-            </defs>
-            <path d="M120 30L210 110L165 270H75L30 110L120 30Z" stroke="url(#ms-facet)" strokeWidth="1.2" fill="none" />
-            <path d="M120 30L120 270M30 110L210 110M75 270L120 110L165 270M120 110L210 110M120 110L30 110" stroke="url(#ms-facet)" strokeWidth="0.8" opacity="0.7" />
-          </svg>
-        </div> */}
-        <motion.div
-          ref={layer3}
-          className="absolute inset-0 flex items-center justify-center pb-10 md:pb-16"
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 1.4, delay: 0.6, ease: EASE_STANDARD }}
-        >
-          <span
-            className="font-[family-name:var(--font-display)] text-white"
-            style={{ fontSize: "clamp(3.5rem, 9vw, 7rem)", letterSpacing: "0.04em", lineHeight: 1 }}
-          >
-            Mayavé
-          </span>
-        </motion.div>
-      </div>
-
       <div className="bg-[var(--color-bg-elevated)] py-20 md:py-28">
         <div className="container-editorial flex flex-col items-center text-center max-w-[820px]">
           <motion.p

@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion as fmReducedMotion } from "framer-motion";
-import { EASE_STANDARD } from "@/lib/motion";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   width?: number | string;
@@ -12,7 +11,16 @@ type Props = {
   orientation?: "horizontal" | "vertical";
 };
 
-/** SVG draw-in hairline. Spec: 800ms left-to-right (or top-to-bottom). */
+/**
+ * SVG draw-in hairline — CSS-only.
+ *
+ * Replaces a Framer-Motion variant that animated width/height. The
+ * intersection observer triggers a class flip, and the rest is a single
+ * CSS transition on the transform — cheaper than the Framer scheduler
+ * and shaves the FM dependency on every section that uses a hairline.
+ *
+ * Falls back to "drawn" state when `prefers-reduced-motion: reduce`.
+ */
 export default function Hairline({
   width = 80,
   className = "",
@@ -21,39 +29,51 @@ export default function Hairline({
   delay = 0,
   orientation = "horizontal",
 }: Props) {
-  const reduced = fmReducedMotion();
+  const ref = useRef<HTMLSpanElement>(null);
+  const [active, setActive] = useState(false);
 
-  if (orientation === "vertical") {
-    return (
-      <motion.span
-        aria-hidden
-        className={`block ${className}`}
-        style={{ width: 1, background: color }}
-        initial={{ height: 0 }}
-        whileInView={{ height: typeof width === "number" ? width : "100%" }}
-        viewport={{ once: true, amount: 0.6 }}
-        transition={
-          reduced
-            ? { duration: 0 }
-            : { duration: durationMs / 1000, delay: delay / 1000, ease: EASE_STANDARD }
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setActive(true);
+      return;
+    }
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setActive(true);
+          obs.disconnect();
         }
-      />
+      },
+      { threshold: 0.6 }
     );
-  }
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const isVertical = orientation === "vertical";
+  const sizeValue = typeof width === "number" ? `${width}px` : width;
 
   return (
-    <motion.span
+    <span
+      ref={ref}
       aria-hidden
       className={`block ${className}`}
-      style={{ height: 1, background: color }}
-      initial={{ width: 0 }}
-      whileInView={{ width }}
-      viewport={{ once: true, amount: 0.6 }}
-      transition={
-        reduced
-          ? { duration: 0 }
-          : { duration: durationMs / 1000, delay: delay / 1000, ease: EASE_STANDARD }
-      }
+      style={{
+        background: color,
+        width: isVertical ? "1px" : sizeValue,
+        height: isVertical ? sizeValue : "1px",
+        transform: active
+          ? "scale(1)"
+          : isVertical
+            ? "scaleY(0)"
+            : "scaleX(0)",
+        transformOrigin: isVertical ? "top center" : "left center",
+        transition: `transform ${durationMs}ms cubic-bezier(0.65, 0, 0.35, 1) ${delay}ms`,
+        willChange: "transform",
+      }}
     />
   );
 }

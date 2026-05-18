@@ -1,41 +1,43 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { resolveImageUrl } from "@/lib/media";
+import blurManifest from "@/lib/media-blur.json";
+
+const BLUR = blurManifest as Record<string, string>;
+
+const DEFAULT_BLUR =
+  "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoQABAABABoJYwCdADcy8xAAP7w3fBJ6y/xTHzkHzyOeJz/8Qz/Ivf+suH/HTd4cdD2WSgvSHgAAA==";
 
 /**
- * <HeroVideo> — autoplaying muted looped silent loop with cool-tone filter.
+ * <HeroVideo> — perceived-instant cinematic video.
  *
- * Intended for spec sections that call for a 10-12s ambient loop:
- * P01-S01 (Home hero), P04-S01 (Mayavé hero), P05-S03 (Making Ecosystem
- * left pane), P01-S06 (Brand Film modal).
+ * Flow:
+ *   1. First paint shows the poster as a real <Image> with `placeholder="blur"`
+ *      and (for hero=true) `priority`. This is the LCP candidate, so the user
+ *      sees a high-quality still immediately — no flash of gradient.
+ *   2. The <video> element is mounted but not loaded until the section enters
+ *      the viewport (IntersectionObserver). preload="none" keeps it off the
+ *      critical request path.
+ *   3. Once metadata is loaded, the video fades over the poster (200ms) and
+ *      starts playing. When the section scrolls offscreen we pause it.
  *
- * Behaviour:
- *   - Plays on viewport entry via IntersectionObserver (saves bandwidth).
- *   - poster derived from the same registry image, so first paint shows the
- *     same cool-tone still as later when the video starts.
- *   - On load failure, the underlying poster image is rendered through
- *     <picture> so layout never breaks.
+ * This gives the smoothness of a hero video without the bandwidth/render-block
+ * cost of treating it as a synchronous asset.
  */
+
 type Props = {
-  /** Pexels (or any) MP4 URL. */
   src: string;
-  /** Optional WebM source. */
   webmSrc?: string;
-  /** Unsplash photo id used both as poster and the on-fail fallback. */
   posterImageId: string;
-  /**
-   * Optional local poster URL (e.g. `/media/images/...png`). When provided
-   * it replaces the Unsplash-derived poster — used for committed Option_A
-   * assets so the first paint is the final still.
-   */
   posterImageSrc?: string;
   alt: string;
   className?: string;
-  /** Disable cool-tone CSS filter for this instance. */
   rawTone?: boolean;
-  /** Darkening gradient layered on top — defaults to 'cinematic' (top 60%
-   *  · mid 30% · bottom 70%) so videos read with proper text contrast. */
   darkOverlay?: "none" | "subtle" | "strong" | "cinematic";
+  /** When true, the poster preloads with priority (hero LCP candidate). */
+  priority?: boolean;
 };
 
 const EDITORIAL_FILTER =
@@ -58,16 +60,47 @@ export default function HeroVideo({
   className = "",
   rawTone = false,
   darkOverlay = "cinematic",
+  posterImageId,
+  posterImageSrc,
+  priority = false,
 }: Props) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLVideoElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const [playable, setPlayable] = useState(false);
   const [errored, setErrored] = useState(false);
 
-  // Pause when offscreen — bandwidth + battery friendly.
+  const posterUrl = posterImageSrc
+    ?? resolveImageUrl({ id: posterImageId }, 1920, 75);
+  const posterBlur = (posterImageSrc && BLUR[posterImageSrc]) || DEFAULT_BLUR;
+
+  // Lazy-load the video: only when its container is within 200px of the viewport.
+  // Also pauses + resumes based on visibility.
   useEffect(() => {
     if (typeof window === "undefined") return;
+    const wrap = wrapperRef.current;
+    if (!wrap) return;
+
+    const loadObs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            setShouldLoad(true);
+            loadObs.disconnect();
+          }
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    loadObs.observe(wrap);
+    return () => loadObs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!shouldLoad) return;
     const node = ref.current;
     if (!node) return;
-    const obs = new IntersectionObserver(
+    const playObs = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (e.isIntersecting) node.play().catch(() => {});
@@ -76,41 +109,58 @@ export default function HeroVideo({
       },
       { threshold: 0.1 }
     );
-    obs.observe(node);
-    return () => obs.disconnect();
-  }, []);
-
-  if (errored) {
-    return (
-      <>
-        {!rawTone && darkOverlay !== "none" && (
-          <span
-            aria-hidden
-            className="absolute inset-0 pointer-events-none"
-            style={{ background: OVERLAY_BY_STRENGTH[darkOverlay] }}
-          />
-        )}
-      </>
-    );
-  }
+    playObs.observe(node);
+    return () => playObs.disconnect();
+  }, [shouldLoad]);
 
   return (
-    <>
-      <video
-        ref={ref}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        aria-label={alt}
-        className={["absolute inset-0 w-full h-full object-cover", className].join(" ")}
+    <div ref={wrapperRef} className="absolute inset-0 w-full h-full overflow-hidden">
+      {/* Poster — always rendered, faded out once the video can play. */}
+      <Image
+        src={posterUrl}
+        alt={alt}
+        fill
+        sizes="100vw"
+        {...(priority
+          ? { preload: true as const, fetchPriority: "high" as const, loading: "eager" as const }
+          : { loading: "eager" as const })}
+        placeholder="blur"
+        blurDataURL={posterBlur}
+        className={[
+          "object-cover transition-opacity duration-300",
+          playable && !errored ? "opacity-0" : "opacity-100",
+          className,
+        ].join(" ")}
         style={rawTone ? undefined : { filter: EDITORIAL_FILTER }}
-        onError={() => setErrored(true)}
-      >
-        {webmSrc && <source src={webmSrc} type="video/webm" />}
-        <source src={src} type="video/mp4" />
-      </video>
+      />
+
+      {/* Video — only rendered once in or near viewport; otherwise we save the
+          decode/bandwidth cost entirely. */}
+      {shouldLoad && !errored && (
+        <video
+          ref={ref}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={posterUrl}
+          aria-label={alt}
+          aria-hidden
+          className={[
+            "absolute inset-0 w-full h-full object-cover transition-opacity duration-300",
+            playable ? "opacity-100" : "opacity-0",
+            className,
+          ].join(" ")}
+          style={rawTone ? undefined : { filter: EDITORIAL_FILTER }}
+          onCanPlay={() => setPlayable(true)}
+          onError={() => setErrored(true)}
+        >
+          {webmSrc && <source src={webmSrc} type="video/webm" />}
+          <source src={src} type="video/mp4" />
+        </video>
+      )}
+
       {!rawTone && darkOverlay !== "none" && (
         <span
           aria-hidden
@@ -118,6 +168,6 @@ export default function HeroVideo({
           style={{ background: OVERLAY_BY_STRENGTH[darkOverlay] }}
         />
       )}
-    </>
+    </div>
   );
 }

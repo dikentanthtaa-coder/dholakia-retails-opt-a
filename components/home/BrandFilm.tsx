@@ -52,6 +52,7 @@ export default function BrandFilm() {
           <HeroVideo
             src={VIDEOS.brandFilm}
             posterImageId={HOME_BRAND_FILM_POSTER.id}
+            posterImageSrc={HOME_BRAND_FILM_POSTER.src}
             alt={HOME_BRAND_FILM_POSTER.alt}
             darkOverlay="none"
           />
@@ -166,8 +167,8 @@ export default function BrandFilm() {
                 muted
                 loop
                 playsInline
-                preload="metadata"
-                poster={resolveImageUrl(HOME_BRAND_FILM_POSTER, 1920, 80)}
+                preload="auto"
+                poster={resolveImageUrl(HOME_BRAND_FILM_POSTER, 1920, 75)}
                 className="absolute inset-0 w-full h-full object-cover"
                 style={{
                   filter: "grayscale(0.5) contrast(1.05) brightness(0.85)",

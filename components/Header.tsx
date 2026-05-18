@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Menu, X } from "lucide-react";
-import gsap from "gsap";
 import Logo from "./Logo";
 import { PRIMARY_NAV, HEADER_CTA } from "@/lib/nav";
 import { EASE_STANDARD } from "@/lib/motion";
@@ -80,21 +79,27 @@ export default function Header() {
       return v === "light" ? "light" : "dark";
     };
 
-    const trigger = () => {
+    let raf = 0;
+    const compute = () => {
+      raf = 0;
       const y = window.scrollY;
       const headerH = window.innerWidth >= 1280 ? 88 : 64;
-      // Probe just below the header — that's the surface the header sits on.
       const probeY = headerH + 4;
       setScrolled(y > 24);
       setPastHero(y > window.innerHeight * 0.8);
       setSectionTheme(detectSectionTheme(probeY));
     };
-    trigger();
+    const trigger = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(compute);
+    };
+    compute();
     window.addEventListener("scroll", trigger, { passive: true });
     window.addEventListener("resize", trigger);
     return () => {
       window.removeEventListener("scroll", trigger);
       window.removeEventListener("resize", trigger);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, [pathname]);
 
@@ -130,32 +135,30 @@ export default function Header() {
     onLight = pastHero;
   }
 
-  // Glass tween — clean light glassmorphism. 8% white wash + 16px blur +
-  // 140% saturate. No dark tint of any kind: the blur preserves the
-  // underlying section, the foreground tone (set below) handles contrast.
-  // Divider also tweens its colour so it reads on either foreground tone.
+  // Glass crossfade — pure CSS transitions on inline styles. Previously this
+  // used GSAP for the same job; the dependency was the only reason `gsap`
+  // appeared on every route's client bundle. CSS `transition: background-color,
+  // backdrop-filter` is just as smooth at 60fps and ships zero extra JS.
   useEffect(() => {
     const bg = bgRef.current;
     const divider = dividerRef.current;
     if (!bg || !divider) return;
 
-    gsap.to(bg, {
-      backgroundColor: scrolled
-        ? "rgba(255, 255, 255, 0.08)"
-        : "rgba(255, 255, 255, 0)",
-      backdropFilter: scrolled ? "blur(16px) saturate(140%)" : "blur(0px)",
-      WebkitBackdropFilter: scrolled ? "blur(16px) saturate(140%)" : "blur(0px)",
-      duration: 0.28,
-      ease: "power2.inOut",
-    });
-    gsap.to(divider, {
-      scaleX: scrolled ? 1 : 0,
-      backgroundColor: onLight
-        ? "rgba(11, 20, 38, 0.10)"
-        : "rgba(255, 255, 255, 0.12)",
-      duration: 0.28,
-      ease: "power2.inOut",
-    });
+    bg.style.transition =
+      "background-color 280ms cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 280ms cubic-bezier(0.4, 0, 0.2, 1), -webkit-backdrop-filter 280ms cubic-bezier(0.4, 0, 0.2, 1)";
+    bg.style.backgroundColor = scrolled
+      ? "rgba(255, 255, 255, 0.08)"
+      : "rgba(255, 255, 255, 0)";
+    bg.style.backdropFilter = scrolled ? "blur(16px) saturate(140%)" : "blur(0px)";
+    (bg.style as CSSStyleDeclaration & { webkitBackdropFilter: string }).webkitBackdropFilter =
+      scrolled ? "blur(16px) saturate(140%)" : "blur(0px)";
+
+    divider.style.transition =
+      "transform 280ms cubic-bezier(0.4, 0, 0.2, 1), background-color 280ms cubic-bezier(0.4, 0, 0.2, 1)";
+    divider.style.transform = `scaleX(${scrolled ? 1 : 0})`;
+    divider.style.backgroundColor = onLight
+      ? "rgba(11, 20, 38, 0.10)"
+      : "rgba(255, 255, 255, 0.12)";
   }, [scrolled, onLight]);
 
   // Lock body scroll when drawer is open.

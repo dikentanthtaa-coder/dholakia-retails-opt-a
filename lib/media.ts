@@ -6,10 +6,11 @@
  * every page picks up the change automatically.
  *
  * Source strategy:
- *   - Final Option_A assets (AI-generated + web-sourced) are committed under
- *     `/public/media` and referenced through the optional `src` field.
- *   - When `src` is set it takes precedence over the legacy Unsplash `id`
- *     lookup; the id remains as a deterministic fallback seed.
+ *   - Final Option_A assets are committed under `/public/media` as `.webp`
+ *     (converted by scripts/optimize-images.mjs). Next.js's built-in image
+ *     pipeline transcodes them to AVIF/WebP per the browser's Accept header.
+ *   - `src` points at the local `.webp`. The legacy Unsplash `id` remains as
+ *     a deterministic fallback seed when an asset is missing.
  *   - Cool-tone CSS filter applied at render via <EditorialImage>.
  *   - On failure, on-brand cool gradient renders behind so layout never breaks.
  */
@@ -47,7 +48,7 @@ export const HOME_HERO = img(
   "Cool-toned macro of a polished diamond with raking light.",
   "P01-S01",
   "16/9",
-  "/media/images/P01_S01_home_hero_optA_image.png"
+  "/media/images/P01_S01_home_hero_optA_image.webp"
 );
 
 export const ABOUT_HERO = img(
@@ -55,7 +56,7 @@ export const ABOUT_HERO = img(
   "Documentary editorial portrait — environmental, cool monochrome.",
   "P02-S01",
   "16/9",
-  "/media/images/P02_S05_the_group_timeline_optA_image_copy.png"
+  "/media/images/P02_S05_the_group_timeline_optA_image_copy.webp"
 );
 
 export const MAYAVE_HERO = img(
@@ -63,7 +64,7 @@ export const MAYAVE_HERO = img(
   "Signature jewellery piece on dark velvet, dramatic raking light.",
   "P04-S01",
   "16/9",
-  "/media/images/P01_S05_home_portfolio_preview_optA_image.png"
+  "/media/mayave/mayave_banner.png"
 );
 
 export const CRAFTSMANSHIP_HERO = img(
@@ -71,7 +72,7 @@ export const CRAFTSMANSHIP_HERO = img(
   "Artisan hands at work with tweezers on a stone, monochrome cool grade.",
   "P05-S01",
   "16/9",
-  "/media/images/P05_S01_craftsmanship_hero_optA_image.png"
+  "/media/images/P05_S01_craftsmanship_hero_optA_image.webp"
 );
 
 export const SUSTAINABILITY_HERO = img(
@@ -79,7 +80,7 @@ export const SUSTAINABILITY_HERO = img(
   "Solar field at blue hour, cool documentary photojournalism.",
   "P06-S01",
   "16/9",
-  "/media/images/P06_S01_sustainability_hero_optA_image.png"
+  "/media/images/P06_S01_sustainability_hero_optA_image.webp"
 );
 
 export const SUSTAINABILITY_GROUP_CONTEXT = img(
@@ -87,7 +88,7 @@ export const SUSTAINABILITY_GROUP_CONTEXT = img(
   "Solar array at scale, blue hour, cool desaturated grade.",
   "P06-S03",
   "16/9",
-  "/media/images/P06_S02_sustainability_responsibility_pillars_optB_image.png"
+  "/media/images/P06_S02_sustainability_responsibility_pillars_optB_image.webp"
 );
 
 export const SUSTAINABILITY_MANIFESTO = img(
@@ -102,7 +103,7 @@ export const INNOVATION_HERO = img(
   "Crystal-lattice macro / lab equipment, cool clinical light.",
   "P07-S01",
   "16/9",
-  "/media/images/P07_S01_innovation_hero_optA_image.png"
+  "/media/images/P07_S01_innovation_hero_optA_image.webp"
 );
 
 export const INNOVATION_LGD = img(
@@ -110,7 +111,7 @@ export const INNOVATION_LGD = img(
   "CVD chamber / scientific lab interior, cool clinical light.",
   "P07-S02",
   "16/9",
-  "/media/images/P07_S02_innovation_lab_grown_diamond_story_optA_image.png"
+  "/media/images/P07_S02_innovation_lab_grown_diamond_story_optA_image.webp"
 );
 
 export const INNOVATION_QUALITY = img(
@@ -118,7 +119,7 @@ export const INNOVATION_QUALITY = img(
   "Provenance-data overlay on circuit / data scene.",
   "P07-S04",
   "16/9",
-  "/media/images/P07_S04_innovation_quality_relevance_optA_image.png"
+  "/media/images/P07_S04_innovation_quality_relevance_optA_image.webp"
 );
 
 export const INNOVATION_PROCESS_EXPLAINER = img(
@@ -126,7 +127,7 @@ export const INNOVATION_PROCESS_EXPLAINER = img(
   "Process explainer — lab-grown diamond growth chamber illustration.",
   "P07-S03",
   "16/9",
-  "/media/images/P07_S03_innovation_process_explainer_optA_image.png"
+  "/media/images/P07_S03_innovation_process_explainer_optA_image.webp"
 );
 
 export const GLOBAL_HERO = img(
@@ -134,7 +135,7 @@ export const GLOBAL_HERO = img(
   "Stylised world map / Surat architecture at blue hour.",
   "P08-S01",
   "16/9",
-  "/media/images/P08_S01_global_presence_partnerships_hero_optA_image.png"
+  "/media/images/P08_S01_global_presence_partnerships_hero_optA_image.webp"
 );
 
 export const GLOBAL_PARTNERSHIPS = img(
@@ -156,7 +157,7 @@ export const CAREERS_HERO = img(
   "Documentary group photograph in a Surat atelier, monochrome cool grade.",
   "P10-S01",
   "16/9",
-  "/media/images/P10_S01_careers_hero_optA_image.png"
+  "/media/images/P10_S01_careers_hero_optA_image.webp"
 );
 
 export const CONTACT_HERO = img(
@@ -171,7 +172,7 @@ export const BLOG_HERO_PATTERN = img(
   "Editorial atmosphere — soft journal aesthetic.",
   "P18-S01",
   "16/9",
-  "/media/images/P19_S04_single_blog_post_related_posts_optA_image.png"
+  "/media/images/P19_S04_single_blog_post_related_posts_optA_image.webp"
 );
 
 /* ─── Home page sections ──────────────────────────────────────────────── */
@@ -181,7 +182,7 @@ export const HOME_PORTFOLIO_PREVIEW = img(
   "Mayavé piece on cream velvet, raking light, shallow DOF.",
   "P01-S05",
   "4/5",
-  "/media/images/P01_S05_home_portfolio_preview_optA_image.png"
+  "/media/images/P01_S05_home_portfolio_preview_optA_image.webp"
 );
 
 export const HOME_BRAND_FILM_POSTER = img(
@@ -189,7 +190,7 @@ export const HOME_BRAND_FILM_POSTER = img(
   "Atelier scene — hands setting a stone, cinematic monochrome.",
   "P01-S06",
   "16/9",
-  "/media/images/P01_S06_home_brand_film_optA_image.png"
+  "/media/images/P01_S06_home_brand_film_optA_image.webp"
 );
 
 export const HOME_CORPORATE_SNAPSHOT = img(
@@ -197,7 +198,7 @@ export const HOME_CORPORATE_SNAPSHOT = img(
   "Surat workshop interior — drone or static interior, cool LUT.",
   "P01-S04",
   "16/9",
-  "/media/images/P01_S04_home_corporate_snapshot_optA_image.png"
+  "/media/images/P01_S04_home_corporate_snapshot_optA_image.webp"
 );
 
 export const HOME_SUSTAINABILITY_TEASER = img(
@@ -205,7 +206,7 @@ export const HOME_SUSTAINABILITY_TEASER = img(
   "Environmental landscape at blue hour, restrained luxury reference.",
   "P01-S07",
   "16/9",
-  "/media/images/P01_S07_home_sustainability_teaser_optA_image.png"
+  "/media/images/P01_S07_home_sustainability_teaser_optA_image.webp"
 );
 
 /**
@@ -218,7 +219,7 @@ export const HOME_NEWS_PREVIEW_PLACEHOLDER = img(
   "Editorial newsroom still-life — placeholder thumbnail until live posts publish.",
   "P01-S08",
   "4/5",
-  "/media/images/P01_S08_home_news_press_preview_optA_image.png"
+  "/media/images/P01_S08_home_news_press_preview_optA_image.webp"
 );
 
 /* ─── Portfolio / Mayavé ──────────────────────────────────────────────── */
@@ -228,7 +229,7 @@ export const PORTFOLIO_HERO_PATTERN = img(
   "Editorial brand mark — atelier overhead.",
   "P03-S01",
   "16/9",
-  "/media/images/P03_S01_portfolio_hero_optB_image.png"
+  "/media/images/P03_S01_portfolio_hero_optB_image.webp"
 );
 
 export const PORTFOLIO_BRAND_MATRIX_MAYAVE = img(
@@ -236,7 +237,7 @@ export const PORTFOLIO_BRAND_MATRIX_MAYAVE = img(
   "Mayavé hero treatment — single signature piece on dark.",
   "P03-S02",
   "16/9",
-  "/media/images/P03_S02_portfolio_brand_matrix_optA_image.png"
+  "/media/images/P03_S02_portfolio_brand_matrix_optA_image.webp"
 );
 
 export const MAYAVE_SPOTLIGHT = img(
@@ -244,7 +245,7 @@ export const MAYAVE_SPOTLIGHT = img(
   "Mayavé signature piece, cinematic raking light, cream velvet.",
   "P03-S03",
   "16/9",
-  "/media/web/P19_S02_single_blog_post_article_body_optB_image.png"
+  "/media/mayave/mayave_banner.png"
 );
 
 export const MAYAVE_LOOKBOOK: Img[] = [
@@ -253,42 +254,42 @@ export const MAYAVE_LOOKBOOK: Img[] = [
     "Stillness in detail — pearl-and-pendant on the collarbone, editorial portrait.",
     "P04-S04",
     "4/5",
-    "/media/mayave/lookbook_01_stillness.jpg"
+    "/media/mayave/lookbook_01_stillness.webp"
   ),
   img(
     "1602173574767-37ac01994b2a",
     "Light in proportion — Mayavé signature piece on deep velvet, raking light.",
     "P04-S04",
     "1/1",
-    "/media/mayave/lookbook_02_proportion.jpg"
+    "/media/mayave/lookbook_02_proportion.webp"
   ),
   img(
     "1573408301185-9146fe634ad0",
     "The private surface — diamond bracelet, reflective black acrylic.",
     "P04-S04",
     "16/9",
-    "/media/mayave/lookbook_03_surface.jpg"
+    "/media/mayave/lookbook_03_surface.webp"
   ),
   img(
     "1599643477877-530eb83abc8e",
     "Jewellery as whisper — emerald solitaire on a gold chain, bokeh atelier light.",
     "P04-S04",
     "4/5",
-    "/media/mayave/lookbook_04_whisper.jpg"
+    "/media/mayave/lookbook_04_whisper.webp"
   ),
   img(
     "1531995811006-35cb42e1a022",
     "Stillness in detail — layered fine necklaces, fashion editorial crop.",
     "P04-S04",
     "1/1",
-    "/media/mayave/lookbook_05_chain.jpg"
+    "/media/mayave/lookbook_05_chain.webp"
   ),
   img(
     "1515562141207-7a88fb7ce338",
     "Light in proportion — strung pearls in a presentation case.",
     "P04-S04",
     "16/9",
-    "/media/mayave/lookbook_06_bench.jpg"
+    "/media/mayave/lookbook_06_bench.webp"
   ),
 ];
 
@@ -298,21 +299,21 @@ export const MAYAVE_RELATED_JOURNAL: Img[] = [
     "Restraint and embellishment — gold drop earrings on a marble flatlay.",
     "P04-S05",
     "16/9",
-    "/media/mayave/journal_01_restraint.jpg"
+    "/media/mayave/journal_01_restraint.webp"
   ),
   img(
     "1605100804763-247f67b3557e",
     "Polishing — halo solitaire ring at finishing stage, rose-gold accent.",
     "P04-S05",
     "16/9",
-    "/media/mayave/journal_02_polish.jpg"
+    "/media/mayave/journal_02_polish.webp"
   ),
   img(
     "1611591437281-460bfbe1220a",
     "Diamond cutter — pavé bracelet macro, rose-gold setting.",
     "P04-S05",
     "16/9",
-    "/media/mayave/journal_03_cutter.jpg"
+    "/media/mayave/journal_03_cutter.webp"
   ),
 ];
 
@@ -322,7 +323,7 @@ export const MAYAVE_RELATED_NEWS: Img[] = [
     "Press feature — Mayavé piece in editorial framing.",
     "P04-S06",
     "16/9",
-    "/media/images/P04_S06_mayave_related_news_optA_image.png"
+    "/media/images/P04_S06_mayave_related_news_optA_image.webp"
   ),
   img(
     "1602173574767-37ac01994b2a",
@@ -345,7 +346,7 @@ export const CRAFT_PHILOSOPHY_MACRO = img(
   "Craft macro — selective focus on a setting, deep black background.",
   "P05-S02",
   "3/2",
-  "/media/images/P05_S02_craftsmanship_craft_philosophy_optA_image.png"
+  "/media/images/P05_S02_craftsmanship_craft_philosophy_optA_image.webp"
 );
 
 export const CRAFT_MAKING_ECOSYSTEM = img(
@@ -353,7 +354,7 @@ export const CRAFT_MAKING_ECOSYSTEM = img(
   "Diamond / jewellery production floor, cool LUT, deep blacks.",
   "P05-S03",
   "16/9",
-  "/media/web/P05_S03_craftsmanship_making_ecosystem_optA_image.jpg"
+  "/media/web/P05_S03_craftsmanship_making_ecosystem_optA_image.webp"
 );
 
 export const CRAFT_PROCESS_TIMELINE = img(
@@ -361,7 +362,7 @@ export const CRAFT_PROCESS_TIMELINE = img(
   "Craftsmanship process timeline — bench-side reference still.",
   "P05-S04",
   "16/9",
-  "/media/images/P05_S04_craftsmanship_process_timeline_optA_image.png"
+  "/media/images/P05_S04_craftsmanship_process_timeline_optA_image.webp"
 );
 
 /* ─── About / The Group ───────────────────────────────────────────────── */
@@ -379,7 +380,7 @@ export const GROUP_LEADERSHIP: Img[] = [
     "Founder Director — environmental B&W portrait.",
     "P02-S03",
     "4/5",
-    "/media/images/Leaders/Dravya Dholakia.png"
+    "/media/images/Leaders/Dravya_Dholakia.webp"
   ),
   img(
     "1573497019418-b400bb3ab074",
@@ -407,7 +408,7 @@ export const GROUP_TIMELINE: Img[] = [
     "2024 — corporate base in Surat, architectural photography.",
     "P02-S05",
     "4/5",
-    "/media/images/P02_S05_the_group_timeline_optA_image.png"
+    "/media/images/P02_S05_the_group_timeline_optA_image.webp"
   ),
   img(
     "1518709268805-4e9042af9f23",
@@ -445,15 +446,15 @@ export const SANITY_BOUND_ASSETS = {
   P13_S04_news_article_related:
     "/media/web/P13_S04_news_article_single_related_articles_optA_image.jpg",
   P18_S02_blog_featured: "/media/web/P18_S02_blog_listing_featured_post_optA_image.jpg",
-  P18_S04_blog_grid: "/media/web/P18_S04_blog_listing_posts_grid_optA_image.jpg",
+  P18_S04_blog_grid: "/media/web/P18_S04_blog_listing_posts_grid_optA_image.webp",
   P19_S01_blog_article_hero:
     "/media/web/P19_S01_single_blog_post_blog_article_hero_optA_image.webp",
   P19_S02_blog_article_body:
-    "/media/images/P19_S02_single_blog_post_article_body_optA_image.png",
+    "/media/images/P19_S02_single_blog_post_article_body_optA_image.webp",
   P19_S03_blog_author_share:
-    "/media/web/P19_S03_single_blog_post_author_share_optA_image.jpg",
+    "/media/web/P19_S03_single_blog_post_author_share_optA_image.webp",
   P19_S04_blog_related_posts:
-    "/media/images/P19_S04_single_blog_post_related_posts_optA_image.png",
+    "/media/images/P19_S04_single_blog_post_related_posts_optA_image.webp",
 } as const;
 
 /* ─── Videos ──────────────────────────────────────────────────────────── */
@@ -466,6 +467,8 @@ export const SANITY_BOUND_ASSETS = {
  *     retained as the playable fallback for `mayaveHero` and `makingEcosystem`.
  *   - Sections without a current `<video>` consumer still expose their final
  *     mp4 here so a future hookup is a one-line registry edit.
+ *   - Each video has a paired `.webp` poster (resolveImageUrl above) that is
+ *     rendered immediately while the video downloads in the background.
  */
 export const VIDEOS = {
   /** P01-S01 Home hero — final AI cinematic loop. */

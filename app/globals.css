@@ -260,13 +260,62 @@
   from { transform: scale(1); }
   to   { transform: scale(1.04); }
 }
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
 
 .fade-up { animation: fadeUp 800ms var(--ease-standard) both; }
 .fade-in { animation: fadeIn 800ms var(--ease-standard) both; }
 .bob     { animation: bob 1.6s ease-in-out infinite; }
 .ken-burns { animation: kenBurns 30s ease-in-out infinite alternate; }
 
+/**
+ * Skeleton + shimmer utilities — used in loading.tsx files and as a generic
+ * placeholder anywhere we need a premium "asset is on its way" affordance.
+ * The shimmer animates a 200%-wide gradient diagonally across the element
+ * using only `background-position` (cheap, GPU-friendly, no layout impact).
+ */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(11, 20, 38, 0.06);
+  isolation: isolate;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: shimmer 1.6s linear infinite;
+  z-index: 1;
+}
+.skeleton-dark {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.skeleton-dark::after {
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+}
+
+/* Smooth scrolling for anchor jumps (respects reduced-motion below). */
+html {
+  scroll-behavior: smooth;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

@@ -42,6 +42,18 @@ export default function IntroStatement() {
         }}
       />
 
+      {/* Background video */}
+      <div className="absolute inset-0 pointer-events-none">
+        <video
+          src="/media/mayave/MAYAVE_4K.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
+
       <div className="relative container-editorial flex flex-col items-center text-center max-w-[780px]">
         <motion.div
           initial={{ opacity: 0 }}
@@ -65,7 +77,7 @@ export default function IntroStatement() {
         <RevealText
           text="A corporate foundation for modern luxury."
           as="h2"
-          className="text-[var(--color-text-primary)] mb-8"
+          className="text-white mb-8"
           style={{
             fontSize: "clamp(2rem, 3.8vw, 3.5rem)",
             lineHeight: 1.15,
@@ -77,7 +89,7 @@ export default function IntroStatement() {
         />
 
         <motion.p
-          className="body-lead text-[var(--color-text-body)] max-w-[640px]"
+          className="body-lead text-white/80 max-w-[640px]"
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}

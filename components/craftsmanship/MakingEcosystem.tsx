@@ -7,9 +7,9 @@ import { ArrowRight } from "lucide-react";
 import { useMouseParallax } from "@/hooks/useMouseParallax";
 import CursorPerspective from "@/components/motion/CursorPerspective";
 import RevealText from "@/components/motion/RevealText";
-import EditorialImage from "@/components/motion/EditorialImage";
+import HeroVideo from "@/components/motion/HeroVideo";
 import { EASE_STANDARD } from "@/lib/motion";
-import { CRAFT_MAKING_ECOSYSTEM, VIDEOS, resolveImageUrl } from "@/lib/media";
+import { CRAFT_MAKING_ECOSYSTEM, VIDEOS } from "@/lib/media";
 
 /**
  * P05-S03 Making Ecosystem.
@@ -63,21 +63,13 @@ export default function MakingEcosystem() {
                   "linear-gradient(135deg, #14213d 0%, #0B1426 60%, #060B17 100%)",
               }}
             >
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster={resolveImageUrl(CRAFT_MAKING_ECOSYSTEM, 1920, 80)}
-                className="absolute inset-0 w-full h-full object-cover"
-                style={{
-                  filter: "grayscale(0.5) contrast(1.05) brightness(0.85)",
-                  animation: "kenBurns 24s ease-in-out infinite alternate",
-                }}
-              >
-                <source src={VIDEOS.makingEcosystem} type="video/mp4" />
-              </video>
+              <HeroVideo
+                src={VIDEOS.makingEcosystem}
+                posterImageId={CRAFT_MAKING_ECOSYSTEM.id}
+                posterImageSrc={CRAFT_MAKING_ECOSYSTEM.src}
+                alt={CRAFT_MAKING_ECOSYSTEM.alt}
+                darkOverlay="none"
+              />
             </motion.div>
 
             {/* Layer 2 — overlay */}

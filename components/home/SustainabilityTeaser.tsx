@@ -59,20 +59,28 @@ export default function SustainabilityTeaser() {
     section.addEventListener("mousemove", onMove, { passive: true });
     section.addEventListener("mouseleave", onLeave);
 
-    // Scroll-based parallax: bg moves at 30% scroll speed
-    const onScroll = () => {
+    // Scroll-based parallax — rAF-batched so the handler can fire at scroll
+    // rate without forcing a layout read every frame.
+    let rafScroll = 0;
+    const computeScroll = () => {
+      rafScroll = 0;
       const rect = section.getBoundingClientRect();
       const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
       const yOffset = progress * 0.3 * rect.height * -0.5;
       gsap.set(bg, { y: yOffset });
     };
+    const onScroll = () => {
+      if (rafScroll) return;
+      rafScroll = requestAnimationFrame(computeScroll);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+    computeScroll();
 
     return () => {
       section.removeEventListener("mousemove", onMove);
       section.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("scroll", onScroll);
+      if (rafScroll) cancelAnimationFrame(rafScroll);
     };
   }, [reduced]);
 

@@ -29,7 +29,7 @@ const DIRECTORS: Director[] = [
     role: "Founder, Dholakia Lab Grown Diamond",
     bio: "Founding figure of the Group's manufacturing institution in Surat. Brings multigenerational continuity and the family-stewardship culture that defines the Group's craftsmanship discipline.",
     image: {
-      src: "/media/images/Leaders/Hashu_Dholakia.png",
+      src: "/media/images/Leaders/Hashu_Dholakia.webp",
       alt: "Hashu Dholakia",
     },
   },
@@ -39,7 +39,7 @@ const DIRECTORS: Director[] = [
     bio: "Appointed at incorporation in October 2024. Stewards operations, governance, and partner-network growth across the retail entity.",
     meta: "DIN · 02173366 · Appointed 11 Oct 2024",
     image: {
-      src: "/media/images/Leaders/Rajesh_Dholakia.png",
+      src: "/media/images/Leaders/Rajesh_Dholakia.webp",
       alt: "Rajesh Himmat Dholakia",
     },
   },
@@ -49,7 +49,7 @@ const DIRECTORS: Director[] = [
     bio: "Appointed at incorporation in October 2024. Stewards brand strategy and the Mayavé portfolio house. Second-generation Dholakia.",
     meta: "DIN · 08897843 · Appointed 11 Oct 2024",
     image: {
-      src: "/media/images/Leaders/Dravya_Dholakia.png",
+      src: "/media/images/Leaders/Dravya_Dholakia.webp",
       alt: "Dravya Savjibhai Dholakia",
     },
   },

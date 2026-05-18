@@ -167,6 +167,10 @@ export default function RootLayout({
       className={`${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
     >
       <head>
+        {/* Start the TLS handshake with the Sanity image CDN as early as
+            possible — every CMS-backed thumbnail is served from here. */}
+        <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://cdn.sanity.io" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
