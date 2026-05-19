@@ -354,7 +354,7 @@ export const CRAFT_MAKING_ECOSYSTEM = img(
   "Diamond / jewellery production floor, cool LUT, deep blacks.",
   "P05-S03",
   "16/9",
-  "/media/web/P05_S03_craftsmanship_making_ecosystem_optA_image.webp"
+  "/media/web/P04_S01_mayave_hero_optA_image.jpg"
 );
 
 export const CRAFT_PROCESS_TIMELINE = img(
