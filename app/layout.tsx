@@ -3,6 +3,7 @@ import { Syne, DM_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import HeaderWrapper from "@/components/HeaderWrapper";
 import Footer from "@/components/Footer";
+import DrLoader from "@/components/DrLoader";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -185,6 +186,28 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col bg-[var(--color-bg-primary)] text-[var(--color-text-body)]">
+        {/* Initial-load splash — rendered into the first HTML payload so it
+            paints immediately, then torn down by the inline script below
+            once `window.load` fires (i.e. all images, fonts, and scripts
+            have finished). Belt-and-braces safety timeout caps it at 12s
+            in case `load` never fires (e.g. a hung sub-resource). */}
+        <div
+          id="dr-initial-loader"
+          data-dr-initial-loader
+          // The inline script below adds `dr-loader-host--leaving` and
+          // eventually removes this node *before* React hydrates on fast
+          // loads. That's a known, intentional pre-hydration mutation —
+          // tell React not to flag it as a mismatch (suppression is
+          // shallow: only this element's attrs, not its children).
+          suppressHydrationWarning
+        >
+          <DrLoader />
+        </div>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var el=document.getElementById('dr-initial-loader');if(!el)return;var done=false;function hide(){if(done)return;done=true;el.classList.add('dr-loader-host--leaving');setTimeout(function(){el&&el.parentNode&&el.parentNode.removeChild(el);},600);}if(document.readyState==='complete'){hide();}else{window.addEventListener('load',hide,{once:true});}setTimeout(hide,12000);})();`,
+          }}
+        />
         <HeaderWrapper />
         <main id="main" className="flex-1">
           {children}

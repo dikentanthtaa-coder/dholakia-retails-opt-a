@@ -309,6 +309,155 @@
   );
 }
 
+/**
+ * DR liquid-fill preloader — full-bleed loading screen.
+ * Two stacked SVGs (outline + filled) sized identically; the filled layer
+ * is revealed by a `clip-path: inset(...)` keyframe that rises from the
+ * bottom edge, then drains. A sweeping bar and tracked-out caption sit
+ * beneath the mark. Animation is GPU-friendly (clip-path + transform).
+ */
+.dr-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.25rem;
+  min-height: 100dvh;
+  width: 100%;
+  background: var(--color-bg-primary);
+  color: var(--color-accent-primary);
+  padding: 2rem;
+}
+.dr-loader--fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+}
+
+/**
+ * Initial-load splash host — fixed, full-viewport, on top of header/footer.
+ * Inline script in `app/layout.tsx` adds `--leaving` once `window.load`
+ * fires, then removes the node entirely after the fade completes.
+ */
+#dr-initial-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--color-bg-primary);
+  /* Avoid the route-transition loader's min-height/padding doubling up
+     when nested inside this host. */
+  display: block;
+}
+#dr-initial-loader .dr-loader {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  padding: 0;
+}
+.dr-loader-host--leaving {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 500ms ease;
+}
+.dr-loader--inverse {
+  background: var(--color-bg-inverse);
+  color: #FFFFFF;
+}
+
+.dr-loader__mark {
+  position: relative;
+  width: clamp(72px, 9vw, 104px);
+  aspect-ratio: 37 / 43;
+  /* Subtle breathing so the mark feels alive even mid-cycle. */
+  animation: dr-mark-breathe 4.8s ease-in-out infinite;
+}
+
+.dr-loader__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.dr-loader__svg--stroke {
+  /* Outline tone — deep navy silhouette so the mark reads before the
+     liquid fill arrives. */
+  color: #0a0e1f;
+}
+.dr-loader--inverse .dr-loader__svg--stroke {
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.dr-loader__svg--fill {
+  /* Hidden until the rise keyframe drops the inset from 100% → 0%. */
+  clip-path: inset(100% 0 0 0);
+  animation: dr-fill-rise 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  will-change: clip-path;
+}
+
+.dr-loader__bar {
+  position: relative;
+  display: block;
+  height: 1px;
+  width: clamp(72px, 9vw, 104px);
+  background: color-mix(in srgb, currentColor 18%, transparent);
+  overflow: hidden;
+}
+.dr-loader__bar-fill {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: currentColor;
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: dr-bar-sweep 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.dr-loader__caption {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+.dr-loader--inverse .dr-loader__caption {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes dr-fill-rise {
+  0%   { clip-path: inset(100% 0 0 0); }
+  45%  { clip-path: inset(0% 0 0 0); }
+  70%  { clip-path: inset(0% 0 0 0); }
+  100% { clip-path: inset(100% 0 0 0); }
+}
+
+@keyframes dr-bar-sweep {
+  0%   { transform: scaleX(0);   transform-origin: left center; }
+  45%  { transform: scaleX(1);   transform-origin: left center; }
+  46%  { transform: scaleX(1);   transform-origin: right center; }
+  100% { transform: scaleX(0);   transform-origin: right center; }
+}
+
+@keyframes dr-mark-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.02); }
+}
+
 /* Smooth scrolling for anchor jumps (respects reduced-motion below). */
 html {
   scroll-behavior: smooth;

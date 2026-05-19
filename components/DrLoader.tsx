@@ -1,0 +1,82 @@
+/**
+ * DR liquid-fill preloader — full-bleed loading screen.
+ *
+ * Two stacked SVGs (outline + filled) sized identically; the filled layer
+ * is revealed by a `clip-path: inset(...)` keyframe that rises from the
+ * bottom edge, then drains, giving a liquid-fill feel synced with a
+ * sweeping progress bar and tracked-out caption.
+ *
+ * Pure CSS animation, zero client JS — safe to render from a Server
+ * Component (and from `app/loading.tsx`).
+ */
+
+const DR_ICON_PATH =
+  "M0 0.140505C1.23239 -0.0712879 4.16971 0.00836469 5.47656 0.048708C10.4569 0.228399 15.4488 -0.599383 20.1641 1.43445C24.9698 3.50748 27.506 8.31828 27.9336 13.3837C31.4723 14.0128 34.1088 15.6463 35.3125 19.828C36.2309 23.019 35.7983 28.5545 30.5586 32.0927C31.665 35.3829 35.0595 39.583 37 42.9061C35.0086 43.0139 33.3544 42.9111 31.3682 42.8085C28.5092 41.0162 26.1728 29.9917 21.1914 32.9052C19.8531 34.8794 20.5652 40.2807 20.6963 42.9999L16 42.8085C16.1185 38.4494 16.0629 34.0127 16.0371 29.5975C12.5229 30.1485 8.73458 29.9527 5.41309 29.9794C3.79583 29.9923 1.5624 30.064 0 29.8339V29.6483C1.20992 29.0235 3.91235 25.3928 4.87695 25.2928C8.46305 24.9218 12.5053 25.5479 16.0332 24.6044C16.037 24.0011 16.0404 23.3985 16.0488 22.7977C16.0933 19.6422 15.9203 16.1073 16.2275 13.0009C18.5903 13.0424 20.8512 12.9809 22.9453 13.0057C22.6183 10.8879 21.7226 8.89413 20.2129 7.48816C17.2289 4.70947 13.735 4.7205 9.92871 4.7157C8.23866 4.70681 6.54813 4.72004 4.8584 4.75476C4.87118 8.73936 4.91626 12.7419 4.76855 16.7225C4.73825 17.5397 4.74585 18.3562 4.75977 19.1737C4.2208 20.0786 1.61727 22.1611 0.740234 23.0692C0.66194 23.1503 0.144576 23.3615 0 23.4169V0.140505ZM27.7422 18.0087C27.3508 20.3296 26.5151 22.5423 25.248 24.3964C23.9468 26.3005 22.2638 27.5605 20.3643 28.3934C20.3638 28.4171 20.3648 28.44 20.3643 28.4618C23.2779 28.5331 26.4366 28.7041 29.0811 27.2313C33.544 23.1709 31.5869 19.5427 27.7422 18.0087ZM22.8564 17.246C22.1461 17.2605 21.4458 17.2769 20.7285 17.3446C20.4695 17.7222 20.3849 19.8518 20.3623 22.1747C20.4117 22.1256 20.4619 22.0769 20.5107 22.0262C21.7009 20.7896 22.4916 19.0888 22.8564 17.246Z";
+
+type DrLoaderProps = {
+  message?: string;
+  /** Render against the dark/inverse surface (white mark on deep navy). */
+  inverse?: boolean;
+  /** Fixed full-viewport overlay vs. fill parent flow. */
+  fullscreen?: boolean;
+};
+
+export default function DrLoader({
+  message = "Preparing the chapter",
+  inverse = false,
+  fullscreen = true,
+}: DrLoaderProps) {
+  return (
+    <div
+      className={[
+        "dr-loader",
+        inverse ? "dr-loader--inverse" : "",
+        fullscreen ? "dr-loader--fullscreen" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+    >
+      <div className="dr-loader__mark" aria-hidden="true">
+        <svg
+          className="dr-loader__svg dr-loader__svg--stroke"
+          viewBox="0 0 37 43"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d={DR_ICON_PATH}
+            fillRule="evenodd"
+            clipRule="evenodd"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="0.7"
+            strokeLinejoin="round"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+        <svg
+          className="dr-loader__svg dr-loader__svg--fill"
+          viewBox="0 0 37 43"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d={DR_ICON_PATH}
+            fillRule="evenodd"
+            clipRule="evenodd"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+
+      <span className="dr-loader__bar" aria-hidden="true">
+        <span className="dr-loader__bar-fill" />
+      </span>
+
+      <p className="dr-loader__caption">{message}</p>
+
+      <span className="sr-only">Loading</span>
+    </div>
+  );
+}
