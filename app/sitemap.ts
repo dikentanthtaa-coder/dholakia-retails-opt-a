@@ -5,6 +5,11 @@ import {
   getAllCareerSlugs,
 } from "@/sanity/lib/queries";
 
+// Required for `output: "export"` (GitHub Pages build): the sitemap is
+// resolved once at build time. CMS slugs reflect the state of Sanity
+// at build — rebuild the site to refresh dynamic routes.
+export const dynamic = "force-static";
+
 const SITE_URL = "https://dholakiaretail.com";
 
 /**

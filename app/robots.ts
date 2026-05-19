@@ -1,5 +1,10 @@
 import type { MetadataRoute } from "next";
 
+// Required for `output: "export"` (GitHub Pages build): tells Next.js
+// to emit this route as a plain static file at build time rather than
+// treating it as a dynamic Route Handler.
+export const dynamic = "force-static";
+
 /**
  * robots.txt.
  *
