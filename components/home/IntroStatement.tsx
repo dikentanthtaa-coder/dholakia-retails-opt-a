@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useMouseParallax } from "@/hooks/useMouseParallax";
 import RevealText from "@/components/motion/RevealText";
 import Hairline from "@/components/motion/Hairline";
+import LazyBackgroundVideo from "@/components/motion/LazyBackgroundVideo";
 import { EASE_STANDARD } from "@/lib/motion";
 
 /**
@@ -42,17 +43,18 @@ export default function IntroStatement() {
         }}
       />
 
-      {/* Background video */}
-      <div className="absolute inset-0 pointer-events-none">
-        <video
-          src="/media/mayave/MAYAVE_4K.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      </div>
+      {/*
+        Background video — bandwidth-aware. The asset is a 4K master, so
+        we skip it entirely on phones (<768px), slow connections,
+        Save-Data, reduced-motion, and low-memory devices. The radial
+        gradient + text-drift layers above already give the section its
+        cinematic feel without it.
+      */}
+      <LazyBackgroundVideo
+        src="/media/mayave/MAYAVE_4K.mp4"
+        skipBelowWidth={768}
+        className="absolute inset-0 pointer-events-none"
+      />
 
       <div className="relative container-editorial flex flex-col items-center text-center max-w-[780px]">
         <motion.div

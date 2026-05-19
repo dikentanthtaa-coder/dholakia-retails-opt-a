@@ -56,6 +56,8 @@ export default function Hero() {
           // posterImageSrc={HOME_HERO.src}
           alt={HOME_HERO.alt}
           darkOverlay="none"
+          // LCP candidate — tell next/image to preload + fetchpriority=high.
+          priority
         />
         <div
           className="absolute inset-0 opacity-[0.04] mix-blend-overlay"
@@ -176,7 +178,7 @@ export default function Hero() {
       </motion.div>
 
       {/* Scroll cue — chevron-down with 2→8→2px Y bob, 1.6s ease-in-out infinite */}
-      <motion.div
+      {/* <motion.div
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
         style={{ color: "rgba(255,255,255,0.6)" }}
         initial={{ opacity: 0 }}
@@ -191,7 +193,7 @@ export default function Hero() {
         >
           <ChevronDown size={24} strokeWidth={1.5} />
         </motion.span>
-      </motion.div>
+      </motion.div> */}
     </section>
   );
 }

@@ -357,7 +357,19 @@
 .dr-loader-host--leaving {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 500ms ease;
+  /* Hold visibility until the opacity transition finishes, then snap it
+     to `hidden` so the host stops compositing / consuming pointer hits
+     entirely. The node stays in the DOM (React owns it) — only its
+     presentation goes away. */
+  visibility: hidden;
+  transition: opacity 500ms ease, visibility 0s linear 500ms;
+}
+.dr-loader-host--leaving .dr-loader__svg--fill,
+.dr-loader-host--leaving .dr-loader__bar-fill,
+.dr-loader-host--leaving .dr-loader__mark {
+  /* Stop the keyframe animations once we're leaving so they don't
+     keep ticking the compositor while invisible. */
+  animation: none !important;
 }
 .dr-loader--inverse {
   background: var(--color-bg-inverse);

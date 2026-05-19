@@ -186,26 +186,28 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col bg-[var(--color-bg-primary)] text-[var(--color-text-body)]">
-        {/* Initial-load splash — rendered into the first HTML payload so it
-            paints immediately, then torn down by the inline script below
-            once `window.load` fires (i.e. all images, fonts, and scripts
-            have finished). Belt-and-braces safety timeout caps it at 12s
-            in case `load` never fires (e.g. a hung sub-resource). */}
+        {/* Initial-load splash — rendered into the first HTML payload so
+            it paints immediately. The inline script below adds the
+            `dr-loader-host--leaving` class once `window.load` fires
+            (all images/fonts/scripts complete). The class fades the
+            host out and then drops it to `visibility:hidden` so it's
+            non-interactive and doesn't consume a compositor layer —
+            BUT it stays in the DOM. We deliberately do NOT
+            removeChild() it: React still owns the node, and yanking
+            it from under React produces `insertBefore` /
+            `removeChild` errors during HMR or any later reconcile.
+            Belt-and-braces safety timeout caps the visible duration
+            at 12 s in case `load` never fires. */}
         <div
           id="dr-initial-loader"
           data-dr-initial-loader
-          // The inline script below adds `dr-loader-host--leaving` and
-          // eventually removes this node *before* React hydrates on fast
-          // loads. That's a known, intentional pre-hydration mutation —
-          // tell React not to flag it as a mismatch (suppression is
-          // shallow: only this element's attrs, not its children).
           suppressHydrationWarning
         >
           <DrLoader />
         </div>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){var el=document.getElementById('dr-initial-loader');if(!el)return;var done=false;function hide(){if(done)return;done=true;el.classList.add('dr-loader-host--leaving');setTimeout(function(){el&&el.parentNode&&el.parentNode.removeChild(el);},600);}if(document.readyState==='complete'){hide();}else{window.addEventListener('load',hide,{once:true});}setTimeout(hide,12000);})();`,
+            __html: `(function(){var el=document.getElementById('dr-initial-loader');if(!el)return;var done=false;function hide(){if(done)return;done=true;el.classList.add('dr-loader-host--leaving');}if(document.readyState==='complete'){hide();}else{window.addEventListener('load',hide,{once:true});}setTimeout(hide,12000);})();`,
           }}
         />
         <HeaderWrapper />
