@@ -30,7 +30,7 @@ export default function SustainabilityPage() {
         heading="Read the full sustainability report."
         body="Quarterly updates, audited metrics, and the long-form record from the Sustainability Desk."
         ctaLabel="Contact the Sustainability Desk"
-        ctaHref="/contact?type=press"
+        ctaHref="/contact?type=press#contact-form"
         variant="navy"
       />
     </>

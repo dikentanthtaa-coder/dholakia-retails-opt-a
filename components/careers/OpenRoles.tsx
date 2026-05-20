@@ -104,7 +104,7 @@ export default function OpenRoles({
               profile, send a note to our talent team.
             </p>
             <Link
-              href="/contact?type=careers"
+              href="/contact?type=careers#contact-form"
               className="group/cta inline-flex items-center gap-2 h-12 px-7 rounded-[2px] bg-[var(--color-accent-primary)] text-white hover:bg-[var(--color-accent-deep)] transition-colors duration-[240ms] text-[0.95rem] tracking-wide"
             >
               Share your profile

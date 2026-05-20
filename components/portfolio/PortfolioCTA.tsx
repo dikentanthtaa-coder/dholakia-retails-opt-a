@@ -33,7 +33,7 @@ export default function PortfolioCTA() {
           transition={{ duration: 0.6, delay: 0.5, ease: EASE_STANDARD }}
         >
           <MagneticButton
-            href="/contact?type=partnership"
+            href="/contact?type=partnership#contact-form"
             strength="standard"
             className="group/cta inline-flex items-center gap-3 h-12 px-8 rounded-[2px] border border-[var(--color-accent-primary)] text-[var(--color-accent-primary)] hover:bg-[var(--color-accent-primary)] hover:text-white transition-colors duration-[240ms] text-[0.95rem] tracking-wide"
           >

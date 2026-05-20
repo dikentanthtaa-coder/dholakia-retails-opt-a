@@ -39,7 +39,7 @@ export default function MayavePage() {
         heading="By appointment, by intention."
         body="For private consultations, bespoke discussions, and brand inquiries, connect with Mayavé directly through Dholakia Retail."
         ctaLabel="Arrange a Viewing"
-        ctaHref="/contact?type=appointment"
+        ctaHref="/contact?type=brand#contact-form"
         variant="off-white"
       />
     </>

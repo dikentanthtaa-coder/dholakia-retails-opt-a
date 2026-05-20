@@ -190,7 +190,7 @@ export default function MayaveHero() {
           transition={{ duration: 0.6, delay: 2.5, ease: EASE_STANDARD }}
         >
           <Link
-            href="/contact?type=appointment"
+            href="/contact?type=brand#contact-form"
             className="group/cta inline-flex items-center gap-2 h-12 px-8 rounded-[2px] bg-[var(--color-accent-primary)] text-white hover:bg-[var(--color-accent-deep)] transition-colors duration-[320ms] text-[0.95rem] tracking-wide"
           >
             Book a Private Viewing

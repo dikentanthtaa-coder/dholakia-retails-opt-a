@@ -59,6 +59,20 @@ export default function InquiryForm() {
     }
   }, [initialInquiry, setValue]);
 
+  // Smooth-scroll the form into view when arriving with #contact-form in the URL.
+  // Why: the form is inside <Suspense>, so it mounts after the browser's
+  // initial hash-anchor jump — without this, deep links land mid-page.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash !== "#contact-form") return;
+    const el = document.getElementById("contact-form");
+    if (!el) return;
+    const raf = requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
   const onSubmit = async (data: ContactInput) => {
     setStatus("loading");
     setServerError(null);

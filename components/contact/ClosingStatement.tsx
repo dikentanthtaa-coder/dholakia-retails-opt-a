@@ -19,7 +19,7 @@ const EMAILS: { label: string; address: string }[] = [
   { label: "Business & Partnerships", address: "partnerships@dholakiaretail.com" },
   { label: "Media & Press", address: "press@dholakiaretail.com" },
   { label: "Careers", address: "careers@dholakiaretail.com" },
-  { label: "Brand Inquiries", address: "Info@mayave.com" },
+  { label: "Brand Inquiries", address: "info@dholakiaretail.com" },
 ];
 
 export default function ClosingStatement() {

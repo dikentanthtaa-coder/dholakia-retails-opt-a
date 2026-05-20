@@ -47,7 +47,7 @@ export const FOOTER_NAV = {
   contact: [
     { label: "Contact", href: "/contact" },
     { label: "Careers", href: "/careers" },
-    { label: "Partnerships", href: "/contact?type=partnership" },
+    { label: "Partnerships", href: "/contact?type=partnership#contact-form" },
   ],
 };
 
@@ -68,7 +68,7 @@ export const COMPANY = {
   roc: "Ahmedabad",
   address:
     "Dholakia Ventures, Plot No. D-02 and D-11, Gem & Jewellery Park, GHB, Ichchhapor, Surat, Gujarat 394510, India",
-  email: "Info@mayave.com",
+  email: "info@dholakiaretail.com",
   established: "2024",
 } as const;
 

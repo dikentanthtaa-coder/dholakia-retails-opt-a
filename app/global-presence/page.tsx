@@ -30,7 +30,7 @@ export default function GlobalPresencePage() {
         heading="Partner with the House."
         body="For retail development, strategic alliances, and brand expansion conversations, connect with Dholakia Retail directly."
         ctaLabel="Partner with the House"
-        ctaHref="/contact?type=partnership"
+        ctaHref="/contact?type=partnership#contact-form"
         variant="navy"
       />
     </>

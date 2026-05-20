@@ -145,7 +145,7 @@ export default function CareersHero() {
               }}
             >
               <Link
-                href="/contact?type=careers"
+                href="/contact?type=careers#contact-form"
                 className="group/cta inline-flex items-center gap-2 h-12 px-7 rounded-[2px] border border-white/40 hover:border-white hover:bg-white/5 transition-colors duration-[240ms] text-[0.95rem] tracking-wide text-white"
               >
                 Submit your profile
