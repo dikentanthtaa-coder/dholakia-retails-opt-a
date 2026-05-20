@@ -48,7 +48,7 @@ export const HOME_HERO = img(
   "Cool-toned macro of a polished diamond with raking light.",
   "P01-S01",
   "16/9",
-  "/media/images/P01_S01_home_hero_optA_image.webp"
+  "/media/images/P01_S01_Hero_Image_idea.webp"
 );
 
 export const ABOUT_HERO = img(

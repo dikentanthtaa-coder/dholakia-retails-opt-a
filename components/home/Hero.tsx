@@ -53,7 +53,7 @@ export default function Hero() {
         <HeroVideo
           src={VIDEOS.homeHero}
           posterImageId={HOME_HERO.id}
-          // posterImageSrc={HOME_HERO.src}
+          posterImageSrc={HOME_HERO.src}
           alt={HOME_HERO.alt}
           darkOverlay="none"
           // LCP candidate — tell next/image to preload + fetchpriority=high.
