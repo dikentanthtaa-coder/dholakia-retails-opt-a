@@ -30,7 +30,7 @@ const DIRECTORS: Director[] = [
     bio: "Founding figure of the Group's manufacturing institution in Surat. Brings multigenerational continuity and the family-stewardship culture that defines the Group's craftsmanship discipline.",
     image: {
       src: "/media/images/Leaders/Hashu_Dholakia.webp",
-      alt: "Hashu Dholakia",
+      alt: "Mr. Hasmukh Himmatbhai Dholakia",
     },
   },
   {
@@ -40,7 +40,7 @@ const DIRECTORS: Director[] = [
     meta: "DIN · 02173366 · Appointed 11 Oct 2024",
     image: {
       src: "/media/images/Leaders/Rajesh_Dholakia.webp",
-      alt: "Rajesh Himmat Dholakia",
+      alt: "Mr. Rajesh Himmatbhai Dholakia",
     },
   },
   {
@@ -50,7 +50,7 @@ const DIRECTORS: Director[] = [
     meta: "DIN · 08897843 · Appointed 11 Oct 2024",
     image: {
       src: "/media/images/Leaders/Dravya_Dholakia.webp",
-      alt: "Dravya Savjibhai Dholakia",
+      alt: "Mr. Dravya Savjibhai Dholakia",
     },
   },
 ];
